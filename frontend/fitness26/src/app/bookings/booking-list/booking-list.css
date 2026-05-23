@@ -1,0 +1,11 @@
+.btn-col-flex{
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 10px;
+  justify-content: end;
+  height: 100%;
+}
+
+h2{
+  font-size: 25pt;
+}

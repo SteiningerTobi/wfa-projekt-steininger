@@ -1,0 +1,173 @@
+<section class="course-form-page">
+  @if (isLoading()) {
+    <div class="course-form-state">
+      Kurs wird geladen...
+    </div>
+  } @else {
+    <form class="course-form-card" (ngSubmit)="saveCourse()">
+      <div class="course-form-header">
+        <div>
+          <h2>
+            @if (isEditMode()) {
+              Kurs bearbeiten
+            } @else {
+              Neuen Kurs erstellen
+            }
+          </h2>
+
+          <p>
+            Pflege hier die wichtigsten Kursinformationen. Termine kannst du später separat verwalten.
+          </p>
+        </div>
+
+        @if (isEditMode()) {
+          <button
+            type="button"
+            class="cta-btn"
+            (click)="deleteCourse()"
+          >
+            Kurs löschen
+          </button>
+        }
+      </div>
+
+      <div class="course-form-grid">
+        <label class="form-field form-field-full">
+          <span>Titel</span>
+
+          <input
+            type="text"
+            name="title"
+            [(ngModel)]="form.title"
+            placeholder="z. B. Yoga Basics"
+            required
+          />
+        </label>
+
+        <label class="form-field form-field-full">
+          <span>Beschreibung</span>
+
+          <textarea
+            name="description"
+            rows="5"
+            [(ngModel)]="form.description"
+            placeholder="Beschreibe kurz, worum es in diesem Kurs geht..."
+            required
+          ></textarea>
+        </label>
+
+        <label class="form-field">
+          <span>Schwierigkeit</span>
+
+          <select
+            name="difficulty"
+            [(ngModel)]="form.difficulty"
+            required
+          >
+            <option value="beginner">Anfänger</option>
+            <option value="intermediate">Fortgeschrittene</option>
+            <option value="advanced">Profis</option>
+          </select>
+        </label>
+
+        <label class="form-field">
+          <span>Max. Teilnehmer:innen</span>
+
+          <input
+            type="number"
+            name="max_capacity"
+            [(ngModel)]="form.max_capacity"
+            min="1"
+            required
+          />
+        </label>
+
+        <div class="form-field form-field-full">
+          <span>Kategorien</span>
+
+          @if (!categories().length) {
+            <p class="form-hint">
+              Kategorien werden geladen...
+            </p>
+          } @else {
+            <div class="category-checkbox-grid">
+              @for (category of categories(); track category.id) {
+                <label class="category-checkbox">
+                  <input
+                    type="checkbox"
+                    [checked]="isCategorySelected(category.id)"
+                    (change)="toggleCategory(category.id)"
+                  />
+
+                  <span>{{ category.name }}</span>
+                </label>
+              }
+            </div>
+
+            <p class="form-hint">
+              Wähle eine oder mehrere passende Kategorien für deinen Kurs aus.
+            </p>
+          }
+        </div>
+
+        <label class="form-field form-field-full">
+          <span>Adresse</span>
+
+          <input
+            type="text"
+            name="address"
+            [(ngModel)]="form.address"
+            placeholder="z. B. Fitnessstudio Wien Mitte, Landstraßer Hauptstraße 1"
+            required
+          />
+        </label>
+
+        <label class="form-field form-field-full">
+          <span>Bild-URL</span>
+
+          <input
+            type="text"
+            name="image_path"
+            [(ngModel)]="form.image_path"
+            placeholder="https://..."
+          />
+        </label>
+      </div>
+
+      <div class="course-form-actions">
+        <a routerLink="/my-courses/all" class="cta-outline-btn">
+          Abbrechen
+        </a>
+
+        <button
+          type="submit"
+          class="reg-btn"
+          [disabled]="isSaving()"
+        >
+          @if (isSaving()) {
+            Wird gespeichert...
+          } @else if (isEditMode()) {
+            Änderungen speichern
+          } @else {
+            Kurs erstellen
+          }
+        </button>
+      </div>
+    </form>
+    @if (isEditMode() && courseId()) {
+      <bs-my-sessions-form
+        [courseId]="courseId()!"
+      />
+    }
+  }
+</section>
+
+<bs-confirm-modal
+  [isOpen]="confirmModalOpen()"
+  [title]="confirmModalTitle()"
+  [message]="confirmModalMessage()"
+  [confirmText]="confirmModalConfirmText()"
+  cancelText="Abbrechen"
+  (confirmed)="confirmDeleteCourse()"
+  (cancelled)="cancelConfirmModal()"
+/>

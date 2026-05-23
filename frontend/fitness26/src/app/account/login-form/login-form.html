@@ -1,0 +1,92 @@
+<div class="mx-auto login-form-card">
+  <div class="login-form-header">
+    <h1 class="mt-3 text-4xl font-black leading-none tracking-tight text-[var(--prussian)] md:text-6xl">
+      Anmelden
+    </h1>
+    <p>
+      Melde dich mit deinem Account an, um Kurstermine zu buchen und deine Buchungen zu verwalten.
+    </p>
+  </div>
+
+  @if(!isLoggedIn()) {
+    <form class="login-form" [formGroup]="loginForm" (ngSubmit)="login()">
+      <div class="form-group">
+        <label for="login-email">E-Mail</label>
+
+        <input
+          id="login-email"
+          type="email"
+          placeholder="deine.email@example.com"
+          autocomplete="email"
+          formControlName="email"
+        />
+
+        @if(
+          loginForm.get('email')?.invalid &&
+          (loginForm.get('email')?.dirty || loginForm.get('email')?.touched) &&
+          loginForm.get('email')?.hasError('required')
+          ) {
+          <div class="form-error">E-Mail ist verpflichtend.</div>
+        }
+
+        @if(
+          loginForm.get('email')?.invalid &&
+          (loginForm.get('email')?.dirty || loginForm.get('email')?.touched) &&
+          loginForm.get('email')?.hasError('email')
+          ) {
+          <div class="form-error">Bitte gib eine gültige E-Mail-Adresse ein.</div>
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="login-password">Passwort</label>
+
+        <input
+          id="login-password"
+          type="password"
+          placeholder="••••••••"
+          autocomplete="current-password"
+          formControlName="password"
+        />
+
+        @if(
+          loginForm.get('password')?.invalid &&
+          (loginForm.get('password')?.dirty || loginForm.get('password')?.touched)
+          ) {
+          <div class="form-error">Passwort ist verpflichtend.</div>
+        }
+      </div>
+
+      <div class="login-options">
+      </div>
+
+      @if(loginError) {
+        <div class="form-error">
+          Login fehlgeschlagen. Bitte E-Mail und Passwort prüfen.
+        </div>
+      }
+
+      <button type="submit" class="cta-btn login-submit">
+        Einloggen
+      </button>
+    </form>
+
+    <div class="login-form-footer">
+      <p>Noch keinen Account?</p>
+
+      <a (click)="toBeImplemented()">
+        Jetzt registrieren
+      </a>
+    </div>
+  }
+
+  @if(isLoggedIn()) {
+    <div class="login-form">
+      <p>Du bist bereits eingeloggt.</p>
+
+      <button type="button" class="cta-btn login-submit" (click)="logout()">
+        Ausloggen
+      </button>
+    </div>
+  }
+</div>

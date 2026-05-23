@@ -1,0 +1,151 @@
+/*.info-card {*/
+/*  border: 1px solid #e5e7eb;*/
+/*  border-radius: 1.25rem;*/
+/*  background: white;*/
+/*  padding: 1.5rem;*/
+/*  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);*/
+/*}*/
+
+/*.info-card h2 {*/
+/*  margin: 0 0 1rem;*/
+/*  color: var(--prussian);*/
+/*  font-size: 1.25rem;*/
+/*  font-weight: 900;*/
+/*}*/
+
+/*.todo-box {*/
+/*  border: 1px dashed var(--coral);*/
+/*  border-radius: 1rem;*/
+/*  background: rgba(255, 105, 120, 0.06);*/
+/*  padding: 1rem;*/
+/*  color: #4b5563;*/
+/*  line-height: 1.5;*/
+/*}*/
+
+/*.todo-box strong {*/
+/*  color: var(--coral);*/
+/*}*/
+
+.trainer-avatar-img, .trainer-avatar-icon{
+  max-height: 100px !important;
+}
+
+.trainer-card {
+  border-radius: 1.25rem;
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
+}
+
+.trainer-card-header {
+  margin-bottom: 1rem;
+}
+
+.trainer-card h2 {
+  margin: 0;
+  color: var(--prussian);
+  font-size: 1.25rem;
+  font-weight: 900;
+}
+
+.trainer-profile {
+  display: grid;
+  grid-template-columns: 7rem 1fr;
+  gap: 1.25rem;
+  align-items: start;
+}
+
+.trainer-image-wrapper {
+  width: 7rem;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: 1rem;
+  background: linear-gradient(135deg, var(--gray), var(--teal));
+  box-shadow: 0 10px 22px rgba(5, 60, 94, 0.12);
+}
+
+.trainer-image {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+}
+
+.trainer-image-placeholder {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.trainer-image-placeholder svg {
+  width: 3rem;
+  height: 3rem;
+}
+
+.trainer-content h3 {
+  margin: 0;
+  color: var(--prussian);
+  font-size: 1.25rem;
+  font-weight: 900;
+  line-height: 1.2;
+}
+
+.trainer-bio {
+  margin: 0.9rem 0 0;
+  color: #374151;
+  line-height: 1.55;
+}
+
+.trainer-contact-list {
+  gap: 0.65rem;
+  margin-top: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+.trainer-contact-item {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: 0.35rem 0.75rem;
+  align-items: center;
+  border-radius: 0.8rem;
+  background: #f9fafb;
+  padding: 0.65rem 0.8rem;
+}
+
+.contact-label {
+  color: var(--teal);
+  font-size: 0.75rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.contact-value {
+  color: #374151;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.trainer-empty {
+  border: 1px dashed var(--coral);
+  border-radius: 1rem;
+  background: rgba(255, 105, 120, 0.06);
+  padding: 1rem;
+  color: #6b7280;
+}
+
+@media (max-width: 640px) {
+  .trainer-profile {
+    grid-template-columns: 1fr;
+  }
+
+  .trainer-image-wrapper {
+    width: 100%;
+    height: 14rem;
+  }
+}

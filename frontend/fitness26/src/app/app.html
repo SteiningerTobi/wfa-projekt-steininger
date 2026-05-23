@@ -1,0 +1,88 @@
+<div class="app-shell">
+  <nav class="border-b border-gray-200 bg-dark">
+    <div class="mx-auto max-w-7xl px-4">
+      <div class="flex space-x-8">
+
+        <a
+          routerLink="/home"
+          routerLinkActive="border-blue-500 active-route"
+          [routerLinkActiveOptions]="{ exact: true }"
+          class="border-transparent px-1 py-4 text-sm font-medium nav-link-color hover:border-gray-300"
+        >
+          <img alt="Logo" src="Logo.png" class="header-logo">
+        </a>
+        <div class="w-full even-flex">
+          <a
+            routerLink="/home"
+            routerLinkActive="active-route"
+            [routerLinkActiveOptions]="{ exact: true }"
+            class="border-transparent px-1 py-4 text-sm font-medium nav-link-color hover:border-gray-300"
+          >
+            Home
+          </a>
+
+          <a
+            routerLink="/courses"
+            routerLinkActive="active-route"
+            class="border-transparent px-1 py-4 text-sm font-medium nav-link-color hover:border-gray-300"
+          >
+            Kurse
+          </a>
+
+          @if (isLoggedIn()){
+            <a
+              routerLink="/bookings"
+              routerLinkActive="active-route"
+              class="border-transparent px-1 py-4 text-sm font-medium nav-link-color hover:border-gray-300"
+            >
+              Buchungen
+            </a>
+          }
+
+          @if (isTrainer() && isLoggedIn()) {
+            <a
+            routerLink="/my-courses"
+            routerLinkActive="active-route"
+            class="border-transparent px-1 py-4 text-sm font-medium nav-link-color hover:border-gray-300"
+          >
+            Eigene Kurse
+          </a>
+          }
+        </div>
+
+        <a
+          routerLink="/account"
+          routerLinkActive="active-route"
+          class="border-transparent px-1 py-4 text-sm font-medium nav-link-color hover:border-gray-300"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+          </svg>
+
+        </a>
+
+      </div>
+    </div>
+  </nav>
+
+@if (showSearch()) {
+  <bs-search></bs-search>
+}
+
+
+  @if (router.url === '/404') {
+    <router-outlet></router-outlet>
+  } @else {
+    <main class="app-main">
+      <router-outlet></router-outlet>
+    </main>
+  }
+
+  <footer class="app-footer">
+    <div class="footer-inner">
+      <p>© 2026 Fitns</p>
+
+      <p>Diese Website ist kein realwirtschaftliches Fitnesskursbuchungssystem.</p>
+    </div>
+  </footer>
+</div>

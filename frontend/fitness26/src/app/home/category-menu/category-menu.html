@@ -1,0 +1,27 @@
+<section class="category-menu">
+  <div class="category-menu-header">
+    <h2>Kategorien</h2>
+  </div>
+
+  <div class="category-grid">
+    @for (category of categories; track category.id) {
+      <a
+        class="category-card"
+        [routerLink]="['/courses']"
+        [queryParams]="{ categories: category.id }"
+      >
+        <img
+          class="category-image"
+          [src]="category.image"
+          [alt]="category.name"
+        />
+
+        <div class="category-overlay"></div>
+
+        <span class="category-title">
+          {{ category.name }}
+        </span>
+      </a>
+    }
+  </div>
+</section>

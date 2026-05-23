@@ -1,0 +1,123 @@
+<section class="search-hero">
+  <div class="mx-auto w-full max-w-5xl">
+    <div class="flex w-full flex-col gap-3 sm:flex-row sm:items-end">
+
+      <div class="relative w-full">
+        <label for="course-search" class="search-label">
+          Kurse suchen
+        </label>
+
+        <div class="relative">
+          <input
+            id="course-search"
+            type="text"
+            class="w-full rounded-lg border border-gray-300 bg-white px-4 py-2 pr-10 text-sm text-gray-900 shadow-sm
+            outline-none transition focus:border-[#ff6978] focus:ring-2 focus:ring-[#ff6978]"
+            placeholder="Suche nach Kursen..." (input)="updateSearchTerm($any($event.target).value)"
+            [value]="searchTerm()"
+          />
+
+          <div class="pointer-events-none absolute inset-y-0 right-3 flex items-center text-gray-400">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-5 w-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="1.5"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+              />
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <button type="button" class="cta-btn" (click)="searchCourses()">
+        Suchen
+      </button>
+
+    </div>
+    <div class="category-select relative w-full">
+
+
+      <label for="course-search-filter" class="search-label">
+        Ergebnisse nach Kategorien filtern
+      </label>
+      <div #categoryDropdown id="course-search-filter" class="category-dropdown text-gray-900 relative mt-4 w-full no-marg-top">
+        <button
+          type="button"
+          (click)="toggleCategoryDropdown()"
+          class="flex w-full items-center justify-between rounded-xl border border-gray-300 bg-white px-4 py-3 text-left text-sm font-semibold text-gray-900 shadow-sm hover:border-[var(--coral)] focus:outline-none focus:ring-2 focus:ring-[var(--coral)]"
+        >
+    <span class="text-gray-900">
+      @if (selectedCategoryIds().length === 0) {
+        Kategorien auswählen
+      } @else {
+        {{ selectedCategoryIds().length }} Kategorie(n) ausgewählt
+      }
+    </span>
+
+          <svg
+            class="h-5 w-5 transition-transform"
+            [class.rotate-180]="isCategoryDropdownOpen"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+          >
+            <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+          </svg>
+        </button>
+
+        @if (isCategoryDropdownOpen) {
+          <div class="absolute z-50 mt-2 w-full rounded-xl border border-gray-200 bg-white p-4 shadow-lg">
+            @if (!categories().length) {
+              <p class="px-3 py-2 text-sm text-gray-500">
+                Keine Kategorien gefunden.
+              </p>
+            } @else {
+              <div class="grid grid-cols-2 gap-2 sm:grid-cols-3">
+                @for (category of categories(); track category.id) {
+                  <label class="flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                    <input
+                      type="checkbox"
+                      class="h-4 w-4 rounded border-gray-300 accent-[var(--coral)]"
+                      [checked]="isCategorySelected(category.id)"
+                      (change)="toggleCategory(category.id)"
+                    />
+                    <span>{{ category.name }}</span>
+                  </label>
+                }
+              </div>
+            }
+
+            <div class="mt-3 flex justify-between border-t border-gray-100 pt-3">
+              <button
+                type="button"
+                class="text-sm font-semibold text-gray-500 hover:text-gray-700"
+                (click)="resetCategories(); searchCourses()"
+              >
+                Zurücksetzen
+              </button>
+
+              <button
+                type="button"
+                class="text-sm font-semibold text-[var(--coral)] hover:text-[var(--coral-hover)]"
+                (click)="searchCourses()"
+              >
+                Anwenden
+              </button>
+            </div>
+          </div>
+        }
+      </div>
+
+    </div>
+
+  </div>
+</section>

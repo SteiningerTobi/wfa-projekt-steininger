@@ -1,0 +1,264 @@
+@if (isLoggedIn()) {
+  <div class="big-marg-top overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-sm">
+    <div class="bg-gradient-to-br from-[var(--prussian)] to-[var(--teal)] px-8 py-8 text-white">
+      <div class="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+        <div class="flex items-center gap-5">
+          @if (getUserRole() === 'trainer' && getProfileImage()) {
+            <img
+              [src]="getProfileImage()"
+              [alt]="getUserName()"
+              class="h-24 w-24 rounded-full border-4 border-white/30 object-cover shadow-lg"
+            />
+          }
+
+          <div>
+            <p class="text-xs font-black uppercase tracking-[0.18em] text-[var(--coral)]">
+              Mein Account
+            </p>
+
+            <div class="row">
+              <h1 class="text-white no-marg-bottom">
+                {{ getUserName() }}
+              </h1>
+
+              <span class="mt-0 inline-flex rounded-full bg-white/15 px-3 py-1 text-xs font-black uppercase tracking-wide text-white">
+                {{ getUserRole() }}
+              </span>
+            </div>
+
+            <p class="text-white/85">
+              {{ getUserEmail() }}
+            </p>
+          </div>
+        </div>
+
+        <button
+          type="button"
+          class="cta-btn"
+          (click)="logout()"
+          routerLink="/login"
+        >
+          Logout
+        </button>
+      </div>
+    </div>
+
+    <div class="space-y-8 p-8">
+      <section class="flex-end-row">
+        @if (getUserRole() === 'trainer') {
+          <a
+            routerLink="/my-courses"
+            class="account-links-btn"
+          >
+            Meine Kurse verwalten
+          </a>
+        }
+
+        <a
+          routerLink="/bookings"
+          class="account-links-btn"
+        >
+            Meine Buchungen verwalten
+        </a>
+      </section>
+
+      <section class="rounded-2xl bg-white p-6">
+        <div class="mb-6">
+          <h2 class="text-[var(--prussian)]">
+            Accountinfos
+          </h2>
+        </div>
+
+        <form class="grid gap-5" (ngSubmit)="toBeImplemented()">
+          <div class="grid gap-5 md:grid-cols-2">
+            <label class="grid gap-2">
+              <span class="text-sm font-bold text-gray-700">
+                Name
+              </span>
+
+              <input
+                type="text"
+                class="rounded-xl border border-gray-300 px-4 py-3 text-sm text-gray-700 outline-none transition focus:border-[var(--teal)]"
+                [value]="getUserName()"
+              />
+            </label>
+
+            <label class="grid gap-2">
+              <span class="text-sm font-bold text-gray-700">
+                E-Mail
+              </span>
+
+              <input
+                type="email"
+                class="rounded-xl border border-gray-300 px-4 py-3 text-sm text-gray-700 outline-none transition focus:border-[var(--teal)]"
+                [value]="getUserEmail()"
+              />
+            </label>
+          </div>
+
+          @if (getUserRole() === 'trainer') {
+            <div class="grid gap-5 md:grid-cols-2">
+              <label class="grid gap-2">
+      <span class="text-sm font-bold text-gray-700">
+        Telefonnummer
+      </span>
+
+                <input
+                  type="tel"
+                  class="rounded-xl border border-gray-300 px-4 py-3 text-sm text-gray-700 outline-none transition focus:border-[var(--teal)]"
+                  [value]="getTrainerPhone()"
+                  placeholder="+43 ..."
+                />
+              </label>
+
+              <label class="grid gap-2">
+      <span class="text-sm font-bold text-gray-700">
+        Kontakt-E-Mail
+      </span>
+
+                <input
+                  type="email"
+                  class="rounded-xl border border-gray-300 px-4 py-3 text-sm text-gray-700 outline-none transition focus:border-[var(--teal)]"
+                  [value]="getTrainerContactEmail()"
+                  placeholder="kontakt@example.com"
+                />
+              </label>
+            </div>
+
+            <div class="grid gap-5 md:grid-cols-1">
+              <label class="grid gap-2">
+      <span class="text-sm font-bold text-gray-700">
+        Profilbild-URL
+      </span>
+
+                <input
+                  type="text"
+                  class="rounded-xl border border-gray-300 px-4 py-3 text-sm text-gray-700 outline-none transition focus:border-[var(--teal)]"
+                  [value]="getProfileImage()"
+                  placeholder="https://..."
+                />
+              </label>
+            </div>
+            <div class="grid gap-5 md:grid-cols-1">
+              <label class="grid gap-2">
+      <span class="text-sm font-bold text-gray-700">
+        Trainer-Bio
+      </span>
+
+                <textarea
+                  rows="5"
+                  class="resize-y rounded-xl border border-gray-300 px-4 py-3 text-sm leading-6 text-gray-700 outline-none transition focus:border-[var(--teal)]"
+                  [value]="getTrainerBio()"
+                  placeholder="Beschreibe dich kurz als Trainer:in..."
+                ></textarea>
+              </label>
+            </div>
+          }
+
+          <div class="flex justify-end">
+            <button
+              type="button"
+              class="cta-btn big-marg-top"
+              (click)="toBeImplemented()"
+            >
+              Änderungen speichern
+            </button>
+          </div>
+        </form>
+      </section>
+
+      @if (getUserRole() !== 'trainer') {
+        <section class="rounded-2xl border border-gray-200 p-6 shadow-sm">
+          <div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+            <div class="max-w-2xl">
+
+              <h2 class="text-[var(--prussian)]">
+                Upgrade zum Trainer-Account
+              </h2>
+
+              <p class="mt-2 text-sm leading-6 text-gray-600">
+                Du willst eigene Kurse anbieten? Dann fülle dieses Formular aus und
+                upgrade deinen Acccount. (Feature zurzeit noch nicht verfügbar)
+              </p>
+            </div>
+          </div>
+
+          <form class="mt-6 grid gap-5" (ngSubmit)="toBeImplemented()">
+            <div class="grid gap-5 md:grid-cols-2">
+              <label class="grid gap-2">
+                <span class="text-sm font-bold text-gray-700">
+                  Telefonnummer
+                </span>
+
+                <input
+                  type="tel"
+                  class="rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm text-gray-700 outline-none transition focus:border-[var(--teal)]"
+                  placeholder="+43 ..."
+                />
+              </label>
+
+              <label class="grid gap-2">
+                <span class="text-sm font-bold text-gray-700">
+                  Kontakt-E-Mail
+                </span>
+
+                <input
+                  type="email"
+                  class="rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm text-gray-700 outline-none transition focus:border-[var(--teal)]"
+                  [value]="getUserEmail()"
+                />
+              </label>
+            </div>
+
+            <label class="inline-flex w-fit items-center gap-3 rounded-xl bg-white px-4 py-3 text-sm font-bold text-gray-700 shadow-sm">
+              <input
+                type="checkbox"
+                class="h-4 w-4 rounded border-gray-300 text-[var(--coral)] focus:ring-[var(--coral)]"
+                checked
+              />
+
+              Account-E-Mail als Kontaktadresse verwenden
+            </label>
+
+            <label class="grid gap-2">
+              <span class="text-sm font-bold text-gray-700">
+                Profilbild-URL
+              </span>
+
+              <input
+                type="text"
+                class="rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm text-gray-700 outline-none transition focus:border-[var(--teal)]"
+                placeholder="https://..."
+              />
+            </label>
+
+            <div class="flex justify-end">
+              <button
+                type="submit"
+                class="cta-outline-btn"
+              >
+                Anfrage speichern
+              </button>
+            </div>
+          </form>
+        </section>
+      }
+    </div>
+  </div>
+}
+
+@if (!isLoggedIn()) {
+  <div class="rounded-3xl border border-gray-200 bg-white p-8 shadow-sm">
+    <h1 class="text-3xl font-black text-[var(--prussian)]">
+      Nicht angemeldet
+    </h1>
+
+    <p class="mt-2 text-gray-600">
+      Bitte melde dich an, um deinen Account zu sehen.
+    </p>
+
+    <a routerLink="/login" class="cta-btn mt-6 inline-flex">
+      Zum Login
+    </a>
+  </div>
+}

@@ -1,0 +1,230 @@
+.my-courses-header {
+  display: flex;
+  width: 100%;
+  gap: 1.5rem;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+}
+
+.my-courses-header h1 {
+  margin: 0;
+  color: var(--prussian);
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+.course-form-page {
+  width: 100%;
+}
+
+.course-form-card,
+.course-form-state {
+  border: 1px solid #e5e7eb;
+  border-radius: 1.5rem;
+  background: white;
+  padding: clamp(1.5rem, 3vw, 2.5rem);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.course-form-state {
+  color: #6b7280;
+}
+
+.course-form-header {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+}
+
+.course-form-header h2 {
+  margin: 0;
+  color: var(--prussian);
+  font-size: clamp(1.8rem, 3vw, 2.6rem);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+.course-form-header p {
+  max-width: 42rem;
+  margin: 0.75rem 0 0;
+  color: #6b7280;
+  line-height: 1.6;
+}
+
+.course-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+
+.form-field {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.form-field-full {
+  grid-column: 1 / -1;
+}
+
+.form-field span {
+  color: #374151;
+  font-size: 0.9rem;
+  font-weight: 800;
+}
+
+.form-field input,
+.form-field textarea,
+.form-field select {
+  width: 100%;
+  border: 1px solid #d1d5db;
+  border-radius: 1rem;
+  background: white;
+  padding: 0.9rem 1rem;
+  color: var(--prussian);
+  font: inherit;
+  outline: none;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.form-field textarea {
+  resize: vertical;
+  line-height: 1.6;
+}
+
+.form-field input:focus,
+.form-field textarea:focus,
+.form-field select:focus {
+  border-color: var(--teal);
+  box-shadow: 0 0 0 4px rgba(31, 122, 140, 0.12);
+}
+
+.course-image-preview {
+  margin-top: 1.5rem;
+}
+
+.course-image-preview span {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #374151;
+  font-size: 0.9rem;
+  font-weight: 800;
+}
+
+.course-image-preview img {
+  display: block;
+  width: 100%;
+  max-height: 20rem;
+  border-radius: 1.25rem;
+  object-fit: cover;
+}
+
+.course-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 2rem;
+}
+
+.course-form-actions .cta-btn,
+.course-form-actions .cta-outline-btn {
+  text-decoration: none;
+}
+
+.course-form-actions button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+@media (max-width: 760px) {
+  .my-courses-header,
+  .course-form-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .course-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .course-form-actions {
+    flex-direction: column;
+  }
+
+  .course-form-actions .cta-btn,
+  .course-form-actions .cta-outline-btn,
+  .my-courses-header .cta-btn,
+  .my-courses-header .cta-outline-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+.form-hint {
+  margin: 0.25rem 0 0;
+  color: #6b7280;
+  font-size: 0.85rem;
+}
+
+.category-checkbox-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.category-checkbox {
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+  gap: 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.85rem;
+  background: white;
+  padding: 0.85rem 1rem;
+  color: #374151;
+  font-size: 0.9rem;
+  font-weight: 700;
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.category-checkbox:hover {
+  border-color: var(--teal);
+  background: rgba(255, 105, 120, 0.04);
+}
+
+.category-checkbox input {
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+  accent-color: var(--teal);
+}
+
+.category-checkbox:has(input:checked) {
+  border-color: var(--teal);
+  background: var(--pale-teal);
+  color: var(--teal);
+  box-shadow: 0 0 0 3px rgba(255, 105, 120, 0.08);
+}
+
+@media (min-width: 640px) {
+  .category-checkbox-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 520px) {
+  .category-checkbox-grid {
+    grid-template-columns: 1fr;
+  }
+}

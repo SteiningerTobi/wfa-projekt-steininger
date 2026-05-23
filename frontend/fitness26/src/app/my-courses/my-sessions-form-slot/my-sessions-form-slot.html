@@ -1,0 +1,191 @@
+<article
+  class="flex min-h-[320px] min-w-[260px] max-w-[260px] snap-start flex-col rounded-3xl border p-5 shadow-sm transition sm:min-w-[320px] sm:max-w-[320px]"
+  [class.border-gray-200]="!editMode || session"
+  [class.bg-gray-50]="!editMode || session"
+  [class.border-dashed]="editMode && !session"
+  [class.border-[var(--teal)]]="editMode && !session"
+  [class.bg-[var(--pale-teal)]]="editMode && !session"
+>
+  @if (!editMode && session) {
+    <div>
+      <h4 class="mt-2 text-xl font-black text-[var(--prussian)]">
+        {{ session.start_date | date:'dd.MM.yyyy HH:mm' }}
+      </h4>
+
+      <button
+        type="button"
+        class="link"
+        (click)="openParticipants()"
+      >
+        Teilnehmer:innen anzeigen
+      </button>
+
+      <div class="mt-4 space-y-2">
+        <p class="text-sm text-gray-700">
+          Dauer: {{ session.duration }} Minuten
+        </p>
+
+        @if (session.status) {
+          <p class="text-sm text-gray-700">
+            Status: {{ getStatusLabel(session.status) }}
+          </p>
+        }
+
+      </div>
+    </div>
+
+    <div class="mt-auto flex flex-col gap-2 pt-5">
+      <button
+        type="button"
+        class="cta-outline-btn"
+        (click)="onEdit()"
+      >
+        Bearbeiten
+      </button>
+
+      <button
+        type="button"
+        class="cta-btn"
+        [disabled]="isSaving"
+        (click)="onDelete()"
+      >
+        Löschen
+      </button>
+    </div>
+  }
+
+  @if (editMode && session) {
+    <form class="flex h-full flex-col" (ngSubmit)="onSubmit()">
+      <h4 class="mt-2 text-xl font-black text-[var(--prussian)]">
+        Session aktualisieren
+      </h4>
+
+      <div class="mt-5 space-y-4">
+        <label class="block">
+          <span class="mb-2 block text-sm font-bold text-[var(--prussian)]">
+            Datum & Uhrzeit
+          </span>
+
+          <input
+            type="datetime-local"
+            name="session_start_date"
+            [(ngModel)]="form.start_date"
+            required
+            class="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm text-[var(--prussian)] shadow-sm outline-none transition focus:border-[var(--teal)] focus:ring-2 focus:ring-[var(--teal)]/20"
+          />
+        </label>
+
+        <label class="block">
+          <span class="mb-2 block text-sm font-bold text-[var(--prussian)]">
+            Dauer in Minuten
+          </span>
+
+          <input
+            type="number"
+            name="session_duration"
+            [(ngModel)]="form.duration"
+            min="1"
+            required
+            class="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm text-[var(--prussian)] shadow-sm outline-none transition focus:border-[var(--teal)] focus:ring-2 focus:ring-[var(--teal)]/20"
+          />
+        </label>
+      </div>
+
+      <div class="mt-auto flex flex-col gap-2 pt-5">
+        <button
+          type="button"
+          class="cta-outline-btn"
+          (click)="cancel.emit()"
+        >
+          Abbrechen
+        </button>
+
+        <button
+          type="submit"
+          class="reg-btn"
+          [disabled]="isSaving"
+        >
+          @if (isSaving) {
+            Wird gespeichert...
+          } @else {
+            Termin speichern
+          }
+        </button>
+      </div>
+    </form>
+  }
+
+  @if (editMode && !session) {
+    <button
+      type="button"
+      class="flex h-full min-h-[270px] flex-col items-center justify-center rounded-2xl text-center transition hover:scale-[1.02]"
+      (click)="cancel.emit()"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="teal" class="size-10">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+      </svg>
+
+
+      <span class="mt-5 text-lg font-black text-[var(--prussian)]">
+        Neue Session
+      </span>
+
+      <span class="mt-2 text-sm font-semibold text-gray-500">
+        Bearbeiten verlassen
+      </span>
+    </button>
+  }
+
+  @if (!editMode && !session) {
+    <form class="flex h-full flex-col" (ngSubmit)="onSubmit()">
+      <h4 class="mt-2 text-xl font-black text-[var(--prussian)]">
+        Session hinzufügen
+      </h4>
+
+      <div class="mt-5 space-y-4">
+        <label class="block">
+          <span class="mb-2 block text-sm font-bold text-[var(--prussian)]">
+            Datum & Uhrzeit
+          </span>
+
+          <input
+            type="datetime-local"
+            name="session_start_date"
+            [(ngModel)]="form.start_date"
+            required
+            class="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm text-[var(--prussian)] shadow-sm outline-none transition focus:border-[var(--teal)] focus:ring-2 focus:ring-[var(--teal)]/20"
+          />
+        </label>
+
+        <label class="block">
+          <span class="mb-2 block text-sm font-bold text-[var(--prussian)]">
+            Dauer in Minuten
+          </span>
+
+          <input
+            type="number"
+            name="session_duration"
+            [(ngModel)]="form.duration"
+            min="1"
+            required
+            class="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm text-[var(--prussian)] shadow-sm outline-none transition focus:border-[var(--teal)] focus:ring-2 focus:ring-[var(--teal)]/20"
+          />
+        </label>
+      </div>
+
+      <div class="mt-auto flex flex-col gap-2 pt-5">
+        <button
+          type="submit"
+          class="reg-btn"
+          [disabled]="isSaving"
+        >
+          @if (isSaving) {
+            Wird gespeichert...
+          } @else {
+            Termin hinzufügen
+          }
+        </button>
+      </div>
+    </form>
+  }
+</article>

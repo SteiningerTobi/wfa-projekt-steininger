@@ -1,0 +1,234 @@
+.animated-gradient {
+  position: relative;
+  /*overflow: hidden;*/
+  isolation: isolate;
+  background: var(--gray);
+}
+
+.animated-gradient::before,
+.animated-gradient::after {
+  content: "";
+  position: absolute;
+  inset: -30%;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* Layer 1: radial / wolkig */
+.animated-gradient::before {
+  background:
+    radial-gradient(circle at 25% 30%, rgba(31, 122, 140, 0.95), transparent 32%),
+    radial-gradient(circle at 75% 65%, rgba(197, 195, 198, 0.9), transparent 36%),
+    radial-gradient(circle at 50% 50%, rgba(31, 122, 140, 0.55), transparent 42%);
+  filter: blur(35px);
+  opacity: 0.85;
+  animation: radial-layer 16s ease-in-out infinite alternate;
+}
+
+/* Layer 2: linear / fließend */
+.animated-gradient::after {
+  background: linear-gradient(
+    120deg,
+    rgba(197, 195, 198, 0.9),
+    rgba(31, 122, 140, 0.75),
+    rgba(197, 195, 198, 0.65)
+  );
+  background-size: 300% 300%;
+  opacity: 0.45;
+  animation: linear-layer 20s ease-in-out infinite;
+}
+
+/* Layer 3: zusätzliches Element über echtes Child */
+.gradient-layer {
+  position: absolute;
+  inset: -25%;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    conic-gradient(
+      from 180deg at 50% 50%,
+      rgba(31, 122, 140, 0.65),
+      rgba(197, 195, 198, 0.2),
+      rgba(31, 122, 140, 0.55),
+      rgba(197, 195, 198, 0.5),
+      rgba(31, 122, 140, 0.65)
+    );
+  filter: blur(55px);
+  opacity: 0.35;
+  animation: conic-layer 24s ease-in-out infinite alternate;
+}
+
+@keyframes radial-layer {
+  0% {
+    opacity: 0.45;
+    transform: translate3d(-3%, -2%, 0) scale(1.05) rotate(0deg);
+  }
+
+  50% {
+    opacity: 0.9;
+    transform: translate3d(4%, 3%, 0) scale(1.18) rotate(8deg);
+  }
+
+  100% {
+    opacity: 0.6;
+    transform: translate3d(-2%, 5%, 0) scale(1.12) rotate(-6deg);
+  }
+}
+
+@keyframes linear-layer {
+  0% {
+    opacity: 0.25;
+    background-position: 0% 50%;
+  }
+
+  50% {
+    opacity: 0.65;
+    background-position: 100% 50%;
+  }
+
+  100% {
+    opacity: 0.3;
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes conic-layer {
+  0% {
+    opacity: 0.2;
+    transform: rotate(0deg) scale(1);
+  }
+
+  50% {
+    opacity: 0.55;
+    transform: rotate(35deg) scale(1.15);
+  }
+
+  100% {
+    opacity: 0.3;
+    transform: rotate(-25deg) scale(1.08);
+  }
+}
+
+.animated-gradient > :not(.gradient-layer) {
+  position: relative;
+  z-index: 1;
+}
+
+.trans-bg {
+  background-color: rgba(255, 255, 255, 0);
+}
+
+
+
+.search-hero {
+  position: relative;
+  left: 50%;
+  width: 100vw;
+  min-height: 240px;
+  transform: translateX(-50%);
+  overflow: visible;
+  padding: 3rem 1rem;
+}
+
+.search-content {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 64rem;
+  margin: 0 auto;
+}
+
+.animated-gradient {
+  background: linear-gradient(
+    120deg,
+    var(--prussian),
+    var(--teal),
+    var(--prussian)
+  );
+  background-size: 300% 300%;
+  animation: gradient-flow 14s ease infinite;
+}
+
+@keyframes gradient-flow {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.search-hero {
+  position: relative;
+  left: 50%;
+  width: 100vw;
+  min-height: 240px;
+  transform: translateX(-50%);
+  overflow: visible;
+  padding: 3rem 1rem;
+  isolation: isolate;
+  z-index: 100;
+}
+
+.search-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  background: linear-gradient(
+    120deg,
+    var(--prussian),
+    var(--teal),
+    var(--prussian)
+  );
+  background-size: 300% 300%;
+  animation: gradient-flow 14s ease infinite;
+}
+
+.search-content {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 64rem;
+  margin: 0 auto;
+}
+
+@keyframes gradient-flow {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.no-marg-top{
+  margin-top: 0 !important;
+}
+
+.category-select{
+  margin-top: 10px;
+}
+
+
+.search-label {
+  color: var(--platinum) !important;
+  font-weight: bold;
+  display: block;
+}
+
+.category-dropdown {
+  margin-top: 15px;
+  color: #cbcfd6;
+}

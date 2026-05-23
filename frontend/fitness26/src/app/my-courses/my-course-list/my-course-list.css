@@ -1,0 +1,107 @@
+.my-course-image {
+  display: flex;
+  width: 7rem;
+  max-width: 7rem;
+  height: 7rem;
+  max-height: 7rem;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 0.9rem;
+  background: linear-gradient(135deg, rgba(31, 122, 140, 0.35), var(--teal));
+  color: white;
+  font-size: 2.25rem;
+  font-weight: 900;
+}
+.my-course-row {
+  border: 1px solid #e5e7eb;
+  border-radius: 1.35rem;
+  background: white;
+  padding: 1.25rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+.my-course-row:hover {
+  border-color: rgba(31, 122, 140, 0.45);
+  box-shadow: 0 8px 22px rgba(15, 23, 42, 0.08);
+  transform: translateY(-1px);
+}
+
+.my-course-image {
+  display: flex;
+  width: 9rem;
+  height: 8.75rem;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 0.9rem;
+  background: linear-gradient(135deg, rgba(31, 122, 140, 0.35), var(--teal));
+  color: white;
+  font-size: 2.75rem;
+  font-weight: 900;
+}
+
+.my-course-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.my-course-row h2 {
+  margin: 0;
+  color: var(--prussian);
+  font-size: 1.35rem;
+  font-weight: 900;
+  line-height: 1.15;
+  letter-spacing: -0.035em;
+}
+
+.my-course-description {
+  display: -webkit-box;
+  margin: 0.65rem 0 0;
+  overflow: hidden;
+  color: #374151;
+  font-size: 1rem;
+  line-height: 1.55;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.my-course-row .cta-btn,
+.my-course-row .cta-outline-btn {
+  width: 100%;
+  justify-content: center;
+  text-decoration: none;
+}
+
+.my-course-state {
+  border: 1px solid #e5e7eb;
+  border-radius: 1.35rem;
+  background: white;
+  padding: 2rem;
+  color: #6b7280;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.my-course-state h2 {
+  margin: 0;
+  color: var(--prussian);
+  font-size: 1.35rem;
+  font-weight: 900;
+}
+
+.my-course-state p {
+  margin: 0.5rem 0 0;
+}
+
+@media (max-width: 767px) {
+  .my-course-image {
+    width: 100%;
+    height: 12rem;
+  }
+}

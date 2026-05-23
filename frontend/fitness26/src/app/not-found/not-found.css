@@ -1,0 +1,40 @@
+.not-found-page {
+  position: relative;
+  left: 50%;
+  display: flex;
+  min-height: calc(100vh - var(--nav-height));
+  height: calc(100vh - var(--nav-height));  width: 100vw;
+  transform: translateX(-50%);
+  align-items: start;
+  justify-content: center;
+  overflow: clip;
+  padding: 4rem 1rem;
+  isolation: isolate;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+.not-found-page::before {
+  content:"";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(135deg, var(--prussian), var(--teal));
+  overflow: hidden;
+}
+
+.not-found-card {
+  position: relative;
+  width: 100%;
+  max-width: 44rem;
+  padding: clamp(2rem, 6vw, 4.5rem);
+  text-align: center;
+  backdrop-filter: blur(18px);
+  color: var(--platinum) !important;
+}
+
+.error-text {
+  margin-bottom: 20px !important;
+}
+

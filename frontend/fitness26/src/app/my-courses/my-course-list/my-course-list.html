@@ -1,0 +1,58 @@
+@if (isLoading()) {
+  <div class="my-course-state">
+    Kurse werden geladen...
+  </div>
+} @else if (!courses().length) {
+  <section class="my-course-state">
+    <h2>Noch keine Kurse erstellt</h2>
+
+    <p>
+      Du hast aktuell noch keine eigenen Kurse angelegt.
+    </p>
+  </section>
+} @else {
+  <section class="flex flex-col gap-4">
+    @for (course of courses(); track course.id) {
+      <article class="my-course-row grid gap-5 md:grid-cols-[9rem_1fr_auto] md:items-center">
+        <div class="my-course-image">
+          @if (course.image_path) {
+            <img
+              [src]="course.image_path"
+              [alt]="course.title"
+            />
+          } @else {
+            <span>
+              {{ course.title.charAt(0) }}
+            </span>
+          }
+        </div>
+
+        <div class="min-w-0">
+          <h2 class="truncate">
+            {{ course.title }}
+          </h2>
+
+          <p class="my-course-description">
+            {{ course.description }}
+          </p>
+        </div>
+
+        <div class="flex flex-col gap-2 md:min-w-44">
+          <a
+            [routerLink]="['/my-courses', course.id]"
+            class="reg-btn text-center"
+          >
+            Verwalten
+          </a>
+
+          <a
+            [routerLink]="['/courses', course.id]"
+            class="reg-outline-btn text-center"
+          >
+            Ansehen
+          </a>
+        </div>
+      </article>
+    }
+  </section>
+}

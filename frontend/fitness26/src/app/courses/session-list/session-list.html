@@ -1,0 +1,66 @@
+<section class="session-card">
+  <div class="session-header">
+    <div>
+      <h2>Termine</h2>
+    </div>
+  </div>
+
+  @if (!sessions.length) {
+    <p class="empty-text">
+      Für diesen Kurs sind aktuell keine Termine eingetragen.
+    </p>
+  } @else {
+    <div class="session-slider">
+      @for (session of sessions; track session.id) {
+        @if (session.status !== "past"){
+        <article class="session-slide">
+          <div>
+            <span class="session-status">
+              {{ getStatusLabel(session.status) }}
+            </span>
+
+            <h3>{{ session.start_date | date:'dd.MM.yyyy' }}</h3>
+
+            <p class="session-time">
+              {{ session.start_date | date:'HH:mm' }} Uhr
+            </p>
+
+            <p>Dauer: {{ session.duration }} Minuten</p>
+
+            <p>
+              Plätze: {{ session.booked_count }} / {{ maxCapacity }}
+            </p>
+
+            <p>
+              Frei: {{ getFreeSpots(session) }}
+            </p>
+          </div>
+
+          <button
+            type="button"
+            class="cta-btn"
+            [disabled]="isFullyBooked(session) || isAlreadyBooked(session)"
+            (click)="handleBookingClick(session)"
+          >
+            @if (isAlreadyBooked(session)) {
+              Bereits gebucht
+            } @else if (isFullyBooked(session)) {
+              Ausgebucht
+            } @else {
+              Termin buchen
+            }
+          </button>
+        </article>
+        }
+      }
+    </div>
+  }
+</section>
+
+@if (showLoginModal()) {
+  <div class="login-modal-backdrop" (click)="closeLoginModal()">
+    <div class="login-modal-panel" (click)="$event.stopPropagation()">
+      <bs-login-area></bs-login-area>
+    </div>
+  </div>
+}

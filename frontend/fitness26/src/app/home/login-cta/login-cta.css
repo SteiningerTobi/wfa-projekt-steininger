@@ -1,0 +1,36 @@
+.login-cta {
+  position: relative;
+  left: 50%;
+  width: 100vw;
+  transform: translateX(-50%);
+  margin: 4rem 0 0;
+  background: linear-gradient(
+    135deg,
+    var(--prussian),
+    var(--teal)
+  );
+  padding: clamp(4rem, 8vw, 6rem) 1rem;
+  color: white;
+}
+
+.login-cta-content {
+  max-width: 64rem;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.login-cta p {
+  margin: 1.5rem auto 0;
+  max-width: 52rem;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: clamp(1.1rem, 2vw, 1.5rem);
+  line-height: 1.5;
+}
+
+.m-marg-top{
+  margin-top: 25px !important;
+}
+
+.m-marg-bottom{
+  margin-bottom: 25px !important;
+}

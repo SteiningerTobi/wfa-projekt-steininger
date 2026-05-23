@@ -1,0 +1,12 @@
+.course-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.my-course-img {
+  width: 7rem;
+  height: 7rem;
+}
+
+

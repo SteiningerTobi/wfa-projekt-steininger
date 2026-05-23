@@ -1,0 +1,26 @@
+.pt-top{
+  padding-top: 0;
+}
+
+.small-h2{
+  font-size: 16pt;
+  font-weight: bold;
+}
+
+.login-btn-container{
+  display: flex;
+  justify-content: start;
+  gap: 20px;
+  flex-direction: column;
+}
+
+
+.big-marg-top{
+  margin-top: 2rem;
+}
+
+.account-page {
+  width: min(100% - 2rem, 760px);
+  margin-inline: auto;
+  padding-block: 2.5rem;
+}

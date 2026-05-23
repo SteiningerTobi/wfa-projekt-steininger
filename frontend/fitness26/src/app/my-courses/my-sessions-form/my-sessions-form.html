@@ -1,0 +1,73 @@
+<section class="mt-8 rounded-[2rem] border border-gray-200 bg-white p-6 shadow-sm">
+  <div class="mb-6">
+    <p class="text-xs font-black uppercase tracking-[0.16em] text-[var(--teal)]">
+      Kurstermine
+    </p>
+
+    <h3 class="mt-1 text-2xl font-black text-[var(--prussian)]">
+      Sessions verwalten
+    </h3>
+
+    <p class="mt-2 text-sm text-gray-500">
+      Lege hier einzelne Termine für diesen Kurs an oder bearbeite bestehende Sessions.
+    </p>
+  </div>
+
+  @if (isLoading()) {
+    <div class="rounded-2xl border border-dashed border-gray-300 bg-white p-5 text-gray-500">
+      Termine werden geladen...
+    </div>
+  } @else {
+    <div class="mb-3 flex items-center justify-between gap-4">
+      <h4 class="text-lg font-black text-[var(--prussian)]">
+        Bestehende Termine
+      </h4>
+
+      <p class="text-sm font-semibold text-gray-500">
+        {{ sessions().length }} Termin(e)
+      </p>
+    </div>
+
+    <div class="flex items-stretch gap-4 overflow-x-auto scroll-smooth pb-3 snap-x snap-mandatory">
+      @for (session of sessions(); track session.id) {
+        <bs-my-sessions-form-slot
+          [session]="session"
+          [form]="editForm"
+          [isSaving]="isSaving()"
+          [editMode]="editingSessionId() === session.id"
+          (edit)="editSession($event)"
+          (delete)="deleteSession($event)"
+          (save)="updateSession()"
+          (cancel)="cancelEdit()"
+          (participants)="openParticipantsModal($event)"
+        />
+      }
+
+      <bs-my-sessions-form-slot
+        [session]="null"
+        [form]="createForm"
+        [isSaving]="isSaving()"
+        [editMode]="!!editingSessionId()"
+        (save)="createSession()"
+        (cancel)="cancelEdit()"
+      />
+    </div>
+  }
+
+  <bs-confirm-modal
+    [isOpen]="confirmModalOpen()"
+    [title]="confirmModalTitle()"
+    [message]="confirmModalMessage()"
+    [confirmText]="confirmModalConfirmText()"
+    cancelText="Abbrechen"
+    (confirmed)="confirmDeleteSession()"
+    (cancelled)="cancelConfirmModal()"
+  />
+
+  <bs-participants
+    [isOpen]="participantsModalOpen()"
+    [courseId]="courseId"
+    [sessionId]="selectedParticipantsSessionId()"
+    (closed)="closeParticipantsModal()"
+  />
+</section>

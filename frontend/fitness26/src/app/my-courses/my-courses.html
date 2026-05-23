@@ -1,0 +1,23 @@
+<section class="page my-courses-page">
+  <div class="my-courses-header">
+    <div class="w-full flex-apart">
+      <h1>Meine Kurse</h1>
+      <div  class="flex-center">
+        @if (isListRoute()) {
+          <a routerLink="/my-courses/new" class="reg-btn text-center">
+            Neuen Kurs erstellen +
+          </a>
+        } @else {
+          <a routerLink="/my-courses/all" class="reg-outline-btn text-center">
+            Zurück zur Übersicht
+          </a>
+        }
+      </div>
+
+    </div>
+  </div>
+
+  <router-outlet></router-outlet>
+
+</section>
+

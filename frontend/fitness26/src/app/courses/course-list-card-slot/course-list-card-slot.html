@@ -1,0 +1,30 @@
+<article class="course-card">
+  <div class="course-layout">
+    <div class="course-cover">
+      <ng-content select="[cover]"></ng-content>
+    </div>
+
+    <div class="course-info">
+      <div class="course-title">
+        <ng-content select="[title]"></ng-content>
+      </div>
+
+      <div class="course-subtitle">
+        <ng-content select="[subtitle]"></ng-content>
+      </div>
+
+      <div class="course-meta">
+        <ng-content select="[meta]"></ng-content>
+      </div>
+    </div>
+
+    <div class="course-info-col">
+      <div class="course-categories">
+        <ng-content select="[categories]"></ng-content>
+      </div>
+      <div class="cta-btn">
+        Infos zum Kurs
+      </div>
+    </div>
+  </div>
+</article>
