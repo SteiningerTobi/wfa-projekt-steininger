@@ -1,0 +1,192 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Booking;
+use App\Models\User;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+
+class BookingController extends Controller
+{
+    public function myBookings(): JsonResponse
+    {
+        $user = auth('api')->user();
+
+        $bookings = Booking::with([
+            'sessions.course',
+        ])
+            ->where('user_id', $user->id)
+            ->orderByDesc('created_at')
+            ->get();
+
+        return response()->json($bookings);
+    }
+
+    public function store(Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'session_ids' => 'required|array|min:1',
+            'session_ids.*' => 'exists:course_sessions,id',
+        ]);
+
+        $user = auth('api')->user();
+
+        $sessionIds = array_values(array_unique($validated['session_ids']));
+
+        $sessions = \App\Models\CourseSession::with('course')
+            ->whereIn('id', $sessionIds)
+            ->get();
+
+        $ownCourseSessionIds = $sessions
+            ->filter(fn ($session) => $session->course?->trainer_id === $user->id)
+            ->pluck('id')
+            ->values()
+            ->all();
+
+        if (!empty($ownCourseSessionIds)) {
+            return response()->json([
+                'message' => 'Trainer:innen können keine Termine eigener Kurse buchen.',
+                'own_course_session_ids' => $ownCourseSessionIds,
+            ], 403);
+        }
+
+        $alreadyBookedSessionIds = Booking::query()
+            ->where('user_id', $user->id)
+            ->where('status', 'active')
+            ->whereHas('sessions', function ($query) use ($sessionIds) {
+                $query
+                    ->whereIn('course_sessions.id', $sessionIds)
+                    ->where('session_bookings.status', 'active');
+            })
+            ->with(['sessions' => function ($query) use ($sessionIds) {
+                $query->whereIn('course_sessions.id', $sessionIds);
+            }])
+            ->get()
+            ->flatMap(fn (Booking $booking) => $booking->sessions->pluck('id'))
+            ->unique()
+            ->values()
+            ->all();
+
+        if (!empty($alreadyBookedSessionIds)) {
+            return response()->json([
+                'message' => 'Ein oder mehrere Termine wurden bereits gebucht.',
+                'already_booked_session_ids' => $alreadyBookedSessionIds,
+            ], 409);
+        }
+
+        $booking = Booking::create([
+            'user_id' => $user->id,
+            'status' => 'active',
+        ]);
+
+        foreach ($sessionIds as $sessionId) {
+            $booking->sessionBookings()->create([
+                'session_id' => $sessionId,
+                'status' => 'active',
+                'cancelled_at' => null,
+            ]);
+        }
+
+        return response()->json(
+            $booking->load('sessions.course'),
+            201
+        );
+    }
+
+    public function cancel(int $id): JsonResponse
+    {
+        $user = auth('api')->user();
+
+        $booking = Booking::with('sessionBookings')
+            ->where('id', $id)
+            ->where('user_id', $user->id)
+            ->first();
+
+        if (!$booking) {
+            return response()->json([
+                'message' => 'Buchung wurde nicht gefunden.',
+            ], 404);
+        }
+
+        if ($booking->status === 'cancelled') {
+            return response()->json([
+                'message' => 'Diese Buchung wurde bereits storniert.',
+            ], 409);
+        }
+
+        $booking->update([
+            'status' => 'cancelled',
+        ]);
+
+        $booking->sessionBookings()
+            ->where('status', 'active')
+            ->update([
+                'status' => 'cancelled',
+                'cancelled_at' => now(),
+            ]);
+
+        return response()->json([
+            'message' => 'Buchung wurde erfolgreich storniert.',
+            'booking' => $booking->fresh()->load('sessions.course'),
+        ]);
+    }
+
+    public function cancelSession(int $bookingId, int $sessionId): JsonResponse
+    {
+        $user = auth('api')->user();
+
+        $booking = Booking::query()
+            ->where('id', $bookingId)
+            ->where('user_id', $user->id)
+            ->first();
+
+        if (!$booking) {
+            return response()->json([
+                'message' => 'Buchung wurde nicht gefunden.',
+            ], 404);
+        }
+
+        $sessionBooking = \App\Models\SessionBooking::query()
+            ->where('booking_id', $bookingId)
+            ->where('session_id', $sessionId)
+            ->first();
+
+        if (!$sessionBooking) {
+            return response()->json([
+                'message' => 'Terminbuchung wurde nicht gefunden.',
+            ], 404);
+        }
+
+        if ($sessionBooking->status === 'cancelled') {
+            return response()->json([
+                'message' => 'Dieser Termin wurde bereits storniert.',
+            ], 409);
+        }
+
+        \App\Models\SessionBooking::query()
+            ->where('booking_id', $bookingId)
+            ->where('session_id', $sessionId)
+            ->update([
+                'status' => 'cancelled',
+                'cancelled_at' => now(),
+                'updated_at' => now(),
+            ]);
+
+        $hasActiveSessions = \App\Models\SessionBooking::query()
+            ->where('booking_id', $bookingId)
+            ->where('status', 'active')
+            ->exists();
+
+        if (!$hasActiveSessions) {
+            $booking->update([
+                'status' => 'cancelled',
+            ]);
+        }
+
+        return response()->json([
+            'message' => 'Termin wurde erfolgreich storniert.',
+            'booking' => $booking->fresh()->load('sessions.course'),
+        ]);
+    }
+}
