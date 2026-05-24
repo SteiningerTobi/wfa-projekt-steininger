@@ -6,15 +6,24 @@ use App\Models\Category;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
+/**
+ * Controller für das Abrufen von Kategorien.
+ */
 class CategoryController extends Controller
 {
-    // GET /api/categories
-    public function index()
+    /**
+     * Gibt alle Kategorien zurück.
+     */
+    public function index(): JsonResponse
     {
         return response()->json(Category::all());
     }
 
-    public function show($id){
+    /**
+     * Gibt eine einzelne Kategorie anhand ihrer ID zurück.
+     */
+    public function show($id): JsonResponse
+    {
         $category = Category::find($id);
 
         if (!$category) {
@@ -24,6 +33,5 @@ class CategoryController extends Controller
         }
 
         return response()->json($category);
-
     }
 }

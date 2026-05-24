@@ -8,7 +8,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Carbon;
 
-
+/**
+ * Model für einen konkreten Termin eines Kurses.
+ */
 class CourseSession extends Model
 {
     use HasFactory;
@@ -26,12 +28,18 @@ class CourseSession extends Model
         'status' => 'string',
     ];
 
+    /**
+     * Verknüpft den Termin mit dem zugehörigen Kurs.
+     */
     public function course(): BelongsTo
     {
         return $this->belongsTo(Course::class);
     }
 
-    public function bookings()
+    /**
+     * Verknüpft einen Termin mit mehreren Buchungen über die Pivot-Tabelle.
+     */
+    public function bookings(): BelongsToMany
     {
         return $this->belongsToMany(
             Booking::class,
@@ -42,11 +50,17 @@ class CourseSession extends Model
             ->withTimestamps();
     }
 
+    /**
+     * Gibt die direkten Einträge der Terminbuchungen zurück.
+     */
     public function sessionBookings()
     {
         return $this->hasMany(SessionBooking::class, 'session_id');
     }
 
+    /**
+     * Markiert geplante Termine als vergangen, sobald ihr Startdatum überschritten ist.
+     */
     public static function updatePastSessions(): void
     {
         self::where('status', 'planned')

@@ -7,8 +7,14 @@ use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
+/**
+ * Controller für das Anzeigen, Erstellen und Stornieren von Buchungen.
+ */
 class BookingController extends Controller
 {
+    /**
+     * Gibt alle Buchungen des aktuell eingeloggten Users zurück.
+     */
     public function myBookings(): JsonResponse
     {
         $user = auth('api')->user();
@@ -23,6 +29,9 @@ class BookingController extends Controller
         return response()->json($bookings);
     }
 
+    /**
+     * Erstellt eine neue Buchung für einen oder mehrere Termine.
+     */
     public function store(Request $request): JsonResponse
     {
         $validated = $request->validate([
@@ -32,12 +41,14 @@ class BookingController extends Controller
 
         $user = auth('api')->user();
 
+        // Duplikate werden entfernt, damit derselbe Termin nicht mehrfach gebucht wird.
         $sessionIds = array_values(array_unique($validated['session_ids']));
 
         $sessions = \App\Models\CourseSession::with('course')
             ->whereIn('id', $sessionIds)
             ->get();
 
+        // Verhindert, dass Trainer:innen eigene Kurstermine buchen.
         $ownCourseSessionIds = $sessions
             ->filter(fn ($session) => $session->course?->trainer_id === $user->id)
             ->pluck('id')
@@ -51,6 +62,7 @@ class BookingController extends Controller
             ], 403);
         }
 
+        // Prüft, ob einer der gewünschten Termine bereits aktiv gebucht wurde.
         $alreadyBookedSessionIds = Booking::query()
             ->where('user_id', $user->id)
             ->where('status', 'active')
@@ -80,6 +92,7 @@ class BookingController extends Controller
             'status' => 'active',
         ]);
 
+        // Erstellt für jeden ausgewählten Termin einen Eintrag in der Zwischentabelle.
         foreach ($sessionIds as $sessionId) {
             $booking->sessionBookings()->create([
                 'session_id' => $sessionId,
@@ -94,6 +107,9 @@ class BookingController extends Controller
         );
     }
 
+    /**
+     * Storniert eine komplette Buchung inklusive aller aktiven Terminbuchungen.
+     */
     public function cancel(int $id): JsonResponse
     {
         $user = auth('api')->user();
@@ -119,6 +135,7 @@ class BookingController extends Controller
             'status' => 'cancelled',
         ]);
 
+        // Setzt alle aktiven Termine dieser Buchung ebenfalls auf storniert.
         $booking->sessionBookings()
             ->where('status', 'active')
             ->update([
@@ -132,6 +149,9 @@ class BookingController extends Controller
         ]);
     }
 
+    /**
+     * Storniert einen einzelnen Termin innerhalb einer Buchung.
+     */
     public function cancelSession(int $bookingId, int $sessionId): JsonResponse
     {
         $user = auth('api')->user();
@@ -173,6 +193,7 @@ class BookingController extends Controller
                 'updated_at' => now(),
             ]);
 
+        // Wenn keine aktiven Termine mehr übrig sind, wird auch die Gesamtbuchung storniert.
         $hasActiveSessions = \App\Models\SessionBooking::query()
             ->where('booking_id', $bookingId)
             ->where('status', 'active')

@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+/**
+ * Model für einen Fitnesskurs.
+ */
 class Course extends Model
 {
     use HasFactory;
@@ -27,11 +30,17 @@ class Course extends Model
         'max_capacity' => 'integer',
     ];
 
+    /**
+     * Verknüpft den Kurs mit dem zugehörigen Trainer.
+     */
     public function trainer(): BelongsTo
     {
         return $this->belongsTo(User::class, 'trainer_id');
     }
 
+    /**
+     * Verknüpft den Kurs mit seinen Kategorien.
+     */
     public function categories(): BelongsToMany
     {
         return $this->belongsToMany(
@@ -42,6 +51,9 @@ class Course extends Model
         );
     }
 
+    /**
+     * Verknüpft den Kurs mit seinen Kursterminen.
+     */
     public function sessions(): HasMany
     {
         return $this->hasMany(CourseSession::class);

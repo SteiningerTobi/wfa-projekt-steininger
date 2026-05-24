@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
+/**
+ * Model für eine Kurskategorie.
+ */
 class Category extends Model
 {
     use HasFactory;
@@ -14,6 +17,9 @@ class Category extends Model
         'name',
     ];
 
+    /**
+     * Verknüpft eine Kategorie mit mehreren Kursen.
+     */
     public function courses(): BelongsToMany
     {
         return $this->belongsToMany(

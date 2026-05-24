@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+/**
+ * Model für eine Buchung eines Users.
+ */
 class Booking extends Model
 {
     use HasFactory;
@@ -21,11 +24,17 @@ class Booking extends Model
         'status' => 'string',
     ];
 
+    /**
+     * Verknüpft die Buchung mit dem zugehörigen User.
+     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
+    /**
+     * Verknüpft eine Buchung mit mehreren Kursterminen über die Pivot-Tabelle.
+     */
     public function sessions(): BelongsToMany
     {
         return $this->belongsToMany(
@@ -37,6 +46,9 @@ class Booking extends Model
             ->withTimestamps();
     }
 
+    /**
+     * Gibt die direkten Einträge der Terminbuchungen zurück.
+     */
     public function sessionBookings(): HasMany
     {
         return $this->hasMany(SessionBooking::class, 'booking_id', 'id');

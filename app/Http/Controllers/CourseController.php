@@ -8,14 +8,21 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\Rule;
 
+/**
+ * Controller für das Anzeigen, Erstellen, Bearbeiten und Löschen von Kursen.
+ */
 class CourseController extends Controller
 {
+    /**
+     * Definiert die Relationen, die bei Kursabfragen mitgeladen werden.
+     */
     private function courseRelations(): array
     {
         return [
             'categories',
             'trainer.trainerData',
             'sessions' => function ($query) {
+                // Zählt nur aktive Buchungen pro Termin.
                 $query->withCount([
                     'sessionBookings as booked_count' => function ($query) {
                         $query->where('status', 'active');
@@ -25,8 +32,12 @@ class CourseController extends Controller
         ];
     }
 
+    /**
+     * Gibt alle Kurse inklusive Kategorien, Trainerdaten und Terminen zurück.
+     */
     public function index(): JsonResponse
     {
+        // Aktualisiert vergangene Termine, bevor Kurse ausgegeben werden.
         CourseSession::updatePastSessions();
 
         $courses = Course::with($this->courseRelations())->get();
@@ -34,6 +45,9 @@ class CourseController extends Controller
         return response()->json($courses);
     }
 
+    /**
+     * Gibt einen einzelnen Kurs anhand seiner ID zurück.
+     */
     public function show($id): JsonResponse
     {
         CourseSession::updatePastSessions();
@@ -49,6 +63,9 @@ class CourseController extends Controller
         return response()->json($course);
     }
 
+    /**
+     * Erstellt einen neuen Kurs für den eingeloggten Trainer.
+     */
     public function store(Request $request): JsonResponse
     {
         $user = auth('api')->user();
@@ -76,6 +93,7 @@ class CourseController extends Controller
             'category_ids.*' => 'exists:categories,id',
         ]);
 
+        // Kategorien werden separat gespeichert, weil sie über eine Pivot-Tabelle verknüpft sind.
         $categoryIds = $validated['category_ids'];
         unset($validated['category_ids']);
 
@@ -91,6 +109,9 @@ class CourseController extends Controller
         );
     }
 
+    /**
+     * Aktualisiert einen bestehenden Kurs.
+     */
     public function update(Request $request, $id): JsonResponse
     {
         $user = auth('api')->user();
@@ -121,6 +142,8 @@ class CourseController extends Controller
                 'required',
                 'string',
                 'max:255',
+
+                // Titel muss eindeutig bleiben, ignoriert aber den aktuellen Kurs.
                 Rule::unique('courses', 'title')->ignore($course->id),
             ],
             'description' => 'sometimes|required|string',
@@ -137,6 +160,7 @@ class CourseController extends Controller
 
         $course->update($validated);
 
+        // Kategorien werden nur aktualisiert, wenn sie im Request enthalten sind.
         if ($categoryIds !== null) {
             $course->categories()->sync($categoryIds);
         }
@@ -146,6 +170,9 @@ class CourseController extends Controller
         );
     }
 
+    /**
+     * Löscht einen Kurs anhand seiner ID.
+     */
     public function destroy($id): JsonResponse
     {
         $course = Course::find($id);
@@ -163,7 +190,10 @@ class CourseController extends Controller
         ]);
     }
 
-    public function participants($id)
+    /**
+     * Gibt die Teilnehmer:innen pro Termin eines Kurses zurück.
+     */
+    public function participants($id): JsonResponse
     {
         $course = Course::with([
             'sessions.bookings.user'
@@ -183,6 +213,8 @@ class CourseController extends Controller
                     'start_date' => $session->start_date,
                     'duration' => $session->duration,
                     'status' => $session->status ?? null,
+
+                    // Reduziert die Buchungsdaten auf die relevanten Teilnehmerinformationen.
                     'participants' => $session->bookings->map(function ($booking) {
                         return [
                             'booking_id' => $booking->id,

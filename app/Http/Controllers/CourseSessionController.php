@@ -6,8 +6,14 @@ use App\Models\Course;
 use App\Models\CourseSession;
 use Illuminate\Http\Request;
 
+/**
+ * Controller für das Anzeigen, Erstellen, Bearbeiten und Löschen von Kursterminen.
+ */
 class CourseSessionController extends Controller
 {
+    /**
+     * Gibt alle Termine eines bestimmten Kurses zurück.
+     */
     public function index($id)
     {
         $course = Course::findOrFail($id);
@@ -19,6 +25,9 @@ class CourseSessionController extends Controller
         );
     }
 
+    /**
+     * Erstellt einen neuen Termin für einen Kurs.
+     */
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -32,6 +41,9 @@ class CourseSessionController extends Controller
         return response()->json($session, 201);
     }
 
+    /**
+     * Aktualisiert einen bestehenden Kurstermin.
+     */
     public function update(Request $request, $id)
     {
         $session = CourseSession::findOrFail($id);
@@ -46,6 +58,9 @@ class CourseSessionController extends Controller
         return response()->json($session);
     }
 
+    /**
+     * Löscht einen Kurstermin.
+     */
     public function destroy($id)
     {
         $session = CourseSession::findOrFail($id);
@@ -54,6 +69,9 @@ class CourseSessionController extends Controller
         return response()->json(null, 204);
     }
 
+    /**
+     * Gibt die Teilnehmer:innen eines bestimmten Termins zurück.
+     */
     public function participants($courseId, $sessionId)
     {
         $course = Course::findOrFail($courseId);
@@ -68,6 +86,7 @@ class CourseSessionController extends Controller
             ->where('course_id', $course->id)
             ->findOrFail($sessionId);
 
+        // Reduziert die Buchungsdaten auf die relevanten Teilnehmerinformationen.
         $participants = $session->bookings->map(function ($booking) {
             return [
                 'booking_id' => $booking->id,
