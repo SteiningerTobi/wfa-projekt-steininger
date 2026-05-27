@@ -207,25 +207,8 @@ export class BookingList implements OnInit {
           'Storniert'
         );
 
-        // Aktualisiert den lokalen Status, ohne die gesamte Liste neu zu laden.
-        this.bookings.update(bookings =>
-          bookings.map(booking => ({
-            ...booking,
-            sessions: booking.sessions.map(session =>
-              session.pivot.booking_id === pending.bookingId &&
-              session.pivot.session_id === pending.sessionId
-                ? {
-                  ...session,
-                  pivot: {
-                    ...session.pivot,
-                    status: 'cancelled',
-                    cancelled_at: new Date().toISOString()
-                  }
-                }
-                : session
-            )
-          }))
-        );
+        // Lädt die Buchungen neu, damit auch der Status der Gesamtbuchung aktualisiert wird.
+        this.loadBookings();
       },
       error: (error) => {
         console.error(error);
