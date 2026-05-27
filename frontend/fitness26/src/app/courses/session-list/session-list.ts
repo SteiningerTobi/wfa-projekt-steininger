@@ -211,4 +211,17 @@ export class SessionList implements OnInit, OnChanges {
   closeLoginModal(): void {
     this.showLoginModal.set(false);
   }
+
+  formatDateTime(start_date: string) {
+    const date = start_date.slice(0, 10).split('-').reverse().join('.');
+    const time = start_date.replace('T', ' ').slice(11, 16);
+
+    return `${date} - ${time}`;  }
+
+  // Gibt alle Termine nach Datum/Uhrzeit aufsteigend sortiert zurück.
+  get sortedSessions(): CourseSession[] {
+    return [...this.sessions].sort((a, b) =>
+      new Date(a.start_date).getTime() - new Date(b.start_date).getTime()
+    );
+  }
 }

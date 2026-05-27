@@ -21,11 +21,7 @@
                 {{ getStatusLabel(session.status) }}
               </span>
 
-              <h3>{{ session.start_date | date:'dd.MM.yyyy' }}</h3>
-
-              <p class="session-time">
-                {{ session.start_date | date:'HH:mm' }} Uhr
-              </p>
+              <h3>{{ formatDateTime(session.start_date) }}</h3>
 
               <p>Dauer: {{ session.duration }} Minuten</p>
 

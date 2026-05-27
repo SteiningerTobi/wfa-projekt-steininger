@@ -76,4 +76,11 @@ export class MySessionsFormSlot {
 
     return labels[status] ?? status;
   }
+
+  //Gibt richtigen Zeitwert an UI
+  formatLocalDate(start_date: string) {
+    const date = start_date.slice(0, 10).split('-').reverse().join('.');
+    const time = start_date.replace('T', ' ').slice(11, 16);
+
+    return `${date} - ${time}`;  }
 }

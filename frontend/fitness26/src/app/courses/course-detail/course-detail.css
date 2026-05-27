@@ -32,10 +32,14 @@
   justify-content: center;
   overflow: hidden;
   border-radius: 1.25rem;
-  background: #f3f4f6;
-  color: white;
+  background: linear-gradient(135deg, var(--gray), var(--teal)) !important;
   font-size: 5rem;
   font-weight: 800;
+}
+
+.fill-mostly{
+  height: 90%;
+  width: 90%;
 }
 
 .course-image img {
@@ -122,6 +126,13 @@
   align-items: center;
   justify-content: start;
   column-gap: 0.75rem;
+}
+
+.course-cover{
+  flex-shrink: 0;
+  overflow: hidden;
+  border-radius: 0.75rem;
+  background: linear-gradient(135deg, var(--gray), var(--teal)) !important;
 }
 
 .short-meta-item .meta-label,

@@ -10,7 +10,7 @@
     <!-- Anzeige eines bestehenden Termins. -->
     <div>
       <h4 class="mt-2 text-xl font-black text-[var(--prussian)]">
-        {{ session.start_date | date:'dd.MM.yyyy HH:mm' }}
+        {{ formatLocalDate(session.start_date)}}
       </h4>
 
       <button

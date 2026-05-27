@@ -9,4 +9,10 @@
   height: 7rem;
 }
 
+.course-cover{
+  flex-shrink: 0;
+  overflow: hidden;
+  border-radius: 0.75rem;
+  background: linear-gradient(135deg, var(--gray), var(--teal)) !important;
+}
 
