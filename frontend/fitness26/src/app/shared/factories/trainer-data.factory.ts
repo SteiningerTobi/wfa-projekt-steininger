@@ -1,6 +1,8 @@
 import { TrainerData } from '../classes/trainer-data';
 
+// Factory zum Umwandeln von TrainerData-JSON in TrainerData-Objekte.
 export class TrainerDataFactory {
+  // Erstellt ein einzelnes TrainerData-Objekt aus Backend-JSON.
   static fromJson(json: any): TrainerData {
     return new TrainerData(
       json.id,

@@ -1,5 +1,6 @@
 <section class="page">
   @if (!course()) {
+    <!-- Ladezustand während der Kurs vom Backend geladen wird. -->
     <div class="detail-loading">
       <div class="loading-spinner"></div>
       <p>Kurs wird geladen...</p>
@@ -9,15 +10,18 @@
       <a routerLink="/courses" class="back-link">
         ← Zurück zu den Kursen
       </a>
+
       <div class="main-course-field">
         <div class="course-hero">
           <div class="course-image">
             @if (course()!.image_path) {
-              <img class="img-zoom"
-                   [src]="course()!.image_path"
-                   [alt]="course()!.title"
+              <img
+                class="img-zoom"
+                [src]="course()!.image_path"
+                [alt]="course()!.title"
               />
             } @else {
+              <!-- Fallback, wenn kein Kursbild vorhanden ist. -->
               <span>{{ course()!.title.charAt(0) }}</span>
             }
           </div>
@@ -30,8 +34,8 @@
               </div>
 
               <span class="difficulty-badge">
-            {{ getDifficultyLabel(course()!.difficulty) }}
-          </span>
+                {{ getDifficultyLabel(course()!.difficulty) }}
+              </span>
             </div>
 
             <p class="course-description">
@@ -56,6 +60,7 @@
             </div>
 
             @if (course()!.categories && course()!.categories.length) {
+              <!-- Kategorien verlinken zurück zur Kursübersicht mit aktivem Filter. -->
               <div class="category-list">
                 @for (category of course()!.categories; track category.id) {
                   <a
@@ -69,11 +74,11 @@
               </div>
             }
 
-
             <div class="course-actions">
               <button type="button" class="cta-btn" (click)="scrollToSessions()">
                 Kurstermine ansehen
               </button>
+
               <button
                 type="button"
                 class="cta-outline-btn"
@@ -90,13 +95,14 @@
               </button>
             </div>
 
+            <!-- Zeigt die Trainerinformationen des Kurses. -->
             <bs-trainer-info [trainer]="course()!.trainer"></bs-trainer-info>
-
           </div>
         </div>
       </div>
 
       <section id="sessions" class="sessions-slider-section">
+        <!-- Liste der einzelnen Kurstermine inklusive Buchungsfunktion. -->
         <bs-session-list
           [sessions]="course()!.sessions"
           [maxCapacity]="course()!.max_capacity"
@@ -105,43 +111,6 @@
           [refreshToken]="bookingRefreshToken()">
         </bs-session-list>
       </section>
-      <!--    <div class="detail-grid">-->
-      <!--      <section class="info-card">-->
-      <!--        <h2>Trainerinfo</h2>-->
-
-      <!--        <div class="todo-box">-->
-      <!--          <strong>TODO:</strong>-->
-      <!--          Trainerdaten werden später über die Trainer-ID geladen.-->
-      <!--          <br>-->
-      <!--          Aktuelle Trainer-ID: {{ course()!.trainer_id }}-->
-      <!--        </div>-->
-      <!--      </section>-->
-
-      <!--      <section class="info-card">-->
-      <!--        <h2>Termine / Sessions</h2>-->
-
-      <!--        <div class="todo-box">-->
-      <!--          <strong>TODO:</strong>-->
-      <!--          Hier kommt später die Liste der einzelnen Kurstermine hin. Danach soll pro Termin gebucht werden können.-->
-      <!--        </div>-->
-
-      <!--        @if (course()!.sessions && course()!.sessions.length) {-->
-      <!--          <div class="session-list">-->
-      <!--            @for (session of course()!.sessions; track session.id) {-->
-      <!--              <div class="session-item">-->
-      <!--                <div>-->
-      <!--                  <strong>{{ session.start_date }}</strong>-->
-      <!--                  <p>Dauer: {{ session.duration }} Minuten</p>-->
-      <!--                </div>-->
-
-      <!--                <span>{{ session.status }}</span>-->
-      <!--              </div>-->
-      <!--            }-->
-      <!--          </div>-->
-      <!--        }-->
-      <!--      </section>-->
-      <!--    </div>-->
     </section>
   }
 </section>
-

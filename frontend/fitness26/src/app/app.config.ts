@@ -8,16 +8,24 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { routes } from './app.routes';
 import { TokenInterceptorService } from './shared/token-interceptor.service';
 
+// Zentrale Konfiguration der Angular-App.
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
+
+    // Aktiviert den HttpClient und erlaubt klassische DI-basierte Interceptors.
     provideHttpClient(withInterceptorsFromDi()),
+
+    // Registriert den Token-Interceptor für alle HTTP-Requests.
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptorService,
       multi: true
     },
+
     provideAnimations(),
+
+    // Konfiguration für Toast-Benachrichtigungen.
     provideToastr({
       positionClass: 'toast-top-center',
       timeOut: 3000,

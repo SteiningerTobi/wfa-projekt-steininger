@@ -9,6 +9,7 @@ import { SessionList } from '../session-list/session-list';
 import { BookingService } from '../../shared/booking-service';
 import { AuthenticationService } from '../../shared/authentication.service';
 
+// Komponente für die Detailansicht eines Kurses inklusive Buchungslogik.
 @Component({
   selector: 'bs-course-detail',
   standalone: true,
@@ -28,17 +29,18 @@ export class CourseDetail implements OnInit {
   private authService = inject(AuthenticationService);
   private toastr = inject(ToastrService);
 
-
   course = signal<Course | null>(null);
   isBookingAllSessions = signal(false);
   bookedSessionIds = signal<number[]>([]);
   bookingRefreshToken = signal(0);
 
+  // Lädt beim Öffnen der Seite Kursdaten und bereits gebuchte Termine.
   ngOnInit(): void {
     this.loadCourse();
     this.loadBookedSessions();
   }
 
+  // Lädt alle aktiven Terminbuchungen des eingeloggten Users.
   loadBookedSessions(): void {
     if (!this.authService.isLoggedIn()) {
       this.bookedSessionIds.set([]);
@@ -61,6 +63,7 @@ export class CourseDetail implements OnInit {
     });
   }
 
+  // Ermittelt alle zukünftig buchbaren und nicht ausgebuchten Termine.
   getBookableSessionIds(): number[] {
     const currentCourse = this.course();
 
@@ -77,6 +80,7 @@ export class CourseDetail implements OnInit {
       .map(session => Number(session.id));
   }
 
+  // Prüft, ob bereits alle buchbaren Termine dieses Kurses gebucht wurden.
   areAllSessionsBooked(): boolean {
     const bookableSessionIds = this.getBookableSessionIds();
 
@@ -89,6 +93,7 @@ export class CourseDetail implements OnInit {
     );
   }
 
+  // Lädt den Kurs anhand der ID aus der URL.
   loadCourse(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
 
@@ -113,6 +118,7 @@ export class CourseDetail implements OnInit {
     });
   }
 
+  // Übersetzt technische Schwierigkeitswerte in sichtbare Labels.
   getDifficultyLabel(difficulty: string): string {
     switch (difficulty) {
       case 'beginner':
@@ -126,6 +132,7 @@ export class CourseDetail implements OnInit {
     }
   }
 
+  // Scrollt zum Terminbereich der Detailseite.
   scrollToSessions(): void {
     document.getElementById('sessions')?.scrollIntoView({
       behavior: 'smooth',
@@ -133,6 +140,7 @@ export class CourseDetail implements OnInit {
     });
   }
 
+  // Bucht alle noch offenen Termine eines Kurses.
   bookAllSessions(): void {
     const currentCourse = this.course();
 
@@ -196,8 +204,6 @@ export class CourseDetail implements OnInit {
       return;
     }
 
-    const now = new Date();
-
     const possibleSessionIds = this.getBookableSessionIds();
 
     if (!possibleSessionIds.length) {
@@ -210,6 +216,7 @@ export class CourseDetail implements OnInit {
 
     this.isBookingAllSessions.set(true);
 
+    // Prüft zuerst bestehende Buchungen, damit nur noch offene Termine gebucht werden.
     this.bookingService.getMyBookings().subscribe({
       next: (bookings) => {
         const alreadyBookedSessionIds = bookings
@@ -245,7 +252,6 @@ export class CourseDetail implements OnInit {
             this.loadBookedSessions();
             this.isBookingAllSessions.set(false);
             this.bookingRefreshToken.update(value => value + 1);
-
           },
           error: (error) => {
             this.isBookingAllSessions.set(false);
@@ -299,6 +305,5 @@ export class CourseDetail implements OnInit {
         );
       }
     });
-
   }
 }

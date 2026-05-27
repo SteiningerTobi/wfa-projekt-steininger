@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { LoginForm } from '../login-form/login-form';
 
+// Wrapper-Komponente für den Login-Bereich.
 @Component({
   selector: 'bs-login-area',
   standalone: true,

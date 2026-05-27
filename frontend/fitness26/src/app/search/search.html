@@ -1,7 +1,6 @@
 <section class="search-hero">
   <div class="mx-auto w-full max-w-5xl">
     <div class="flex w-full flex-col gap-3 sm:flex-row sm:items-end">
-
       <div class="relative w-full">
         <label for="course-search" class="search-label">
           Kurse suchen
@@ -13,7 +12,8 @@
             type="text"
             class="w-full rounded-lg border border-gray-300 bg-white px-4 py-2 pr-10 text-sm text-gray-900 shadow-sm
             outline-none transition focus:border-[#ff6978] focus:ring-2 focus:ring-[#ff6978]"
-            placeholder="Suche nach Kursen..." (input)="updateSearchTerm($any($event.target).value)"
+            placeholder="Suche nach Kursen..."
+            (input)="updateSearchTerm($any($event.target).value)"
             [value]="searchTerm()"
           />
 
@@ -39,27 +39,26 @@
       <button type="button" class="cta-btn" (click)="searchCourses()">
         Suchen
       </button>
-
     </div>
+
     <div class="category-select relative w-full">
-
-
       <label for="course-search-filter" class="search-label">
         Ergebnisse nach Kategorien filtern
       </label>
+
       <div #categoryDropdown id="course-search-filter" class="category-dropdown text-gray-900 relative mt-4 w-full no-marg-top">
         <button
           type="button"
           (click)="toggleCategoryDropdown()"
           class="flex w-full items-center justify-between rounded-xl border border-gray-300 bg-white px-4 py-3 text-left text-sm font-semibold text-gray-900 shadow-sm hover:border-[var(--coral)] focus:outline-none focus:ring-2 focus:ring-[var(--coral)]"
         >
-    <span class="text-gray-900">
-      @if (selectedCategoryIds().length === 0) {
-        Kategorien auswählen
-      } @else {
-        {{ selectedCategoryIds().length }} Kategorie(n) ausgewählt
-      }
-    </span>
+          <span class="text-gray-900">
+            @if (selectedCategoryIds().length === 0) {
+              Kategorien auswählen
+            } @else {
+              {{ selectedCategoryIds().length }} Kategorie(n) ausgewählt
+            }
+          </span>
 
           <svg
             class="h-5 w-5 transition-transform"
@@ -75,6 +74,7 @@
         </button>
 
         @if (isCategoryDropdownOpen) {
+          <!-- Dropdown mit allen verfügbaren Kategorien. -->
           <div class="absolute z-50 mt-2 w-full rounded-xl border border-gray-200 bg-white p-4 shadow-lg">
             @if (!categories().length) {
               <p class="px-3 py-2 text-sm text-gray-500">
@@ -90,6 +90,7 @@
                       [checked]="isCategorySelected(category.id)"
                       (change)="toggleCategory(category.id)"
                     />
+
                     <span>{{ category.name }}</span>
                   </label>
                 }
@@ -116,8 +117,6 @@
           </div>
         }
       </div>
-
     </div>
-
   </div>
 </section>

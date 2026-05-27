@@ -4,6 +4,7 @@ import {CategoryMenu} from './category-menu/category-menu';
 import {LoginCta} from './login-cta/login-cta';
 import {AuthenticationService} from '../shared/authentication.service';
 
+//Page Component für Home
 @Component({
   selector: 'bs-home',
   imports: [

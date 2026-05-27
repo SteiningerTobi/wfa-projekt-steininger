@@ -1,27 +1,33 @@
 <article class="course-card">
   <div class="course-layout">
     <div class="course-cover">
+      <!-- Platz für das Kursbild. -->
       <ng-content select="[cover]"></ng-content>
     </div>
 
     <div class="course-info">
       <div class="course-title">
+        <!-- Platz für den Kurstitel. -->
         <ng-content select="[title]"></ng-content>
       </div>
 
       <div class="course-subtitle">
+        <!-- Platz für kurze Zusatzinformationen. -->
         <ng-content select="[subtitle]"></ng-content>
       </div>
 
       <div class="course-meta">
+        <!-- Platz für Metadaten wie Dauer, Ort oder Schwierigkeit. -->
         <ng-content select="[meta]"></ng-content>
       </div>
     </div>
 
     <div class="course-info-col">
       <div class="course-categories">
+        <!-- Platz für die Kurskategorien. -->
         <ng-content select="[categories]"></ng-content>
       </div>
+
       <div class="cta-btn">
         Infos zum Kurs
       </div>

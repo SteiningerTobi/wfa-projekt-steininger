@@ -1,7 +1,9 @@
 import { SessionBooking } from '../classes/session-booking';
 import { CourseSessionFactory } from './course-session.factory';
 
+// Factory zum Umwandeln von SessionBooking-JSON in SessionBooking-Objekte.
 export class SessionBookingFactory {
+  // Erstellt ein einzelnes SessionBooking-Objekt inklusive zugehörigem Kurstermin.
   static fromJson(json: any): SessionBooking {
     return new SessionBooking(
       json.booking_id,
@@ -14,6 +16,7 @@ export class SessionBookingFactory {
     );
   }
 
+  // Erstellt mehrere SessionBooking-Objekte aus einem JSON-Array.
   static fromJsonArray(jsonArray: any[] = []): SessionBooking[] {
     return jsonArray.map(json => SessionBookingFactory.fromJson(json));
   }

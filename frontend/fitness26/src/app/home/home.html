@@ -1,6 +1,7 @@
 <section class="page">
   <h1 class="hidden">Startseite</h1>
   <bs-category-menu></bs-category-menu>
+  //ist der User nicht angemeldet, wird ein Login-Aufruf angezeigt.
   @if (!authService.isLoggedIn()) {
     <bs-login-cta></bs-login-cta>
   }

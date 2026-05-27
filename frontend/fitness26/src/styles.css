@@ -1,7 +1,8 @@
-/* You can add global styles to this file, and also import other style files */
+/* Import externer Stylesheets */
 @import "tailwindcss";
 @import 'ngx-toastr/toastr';
 
+/*Definition globale Variablen*/
 :root {
   --platinum: #dcdcdd;
   --gray: #c5c3c6;
@@ -129,16 +130,6 @@ h2, .h1-small{
 img{
   transition: transform 0.35s ease;
 }
-
-/*h1::after {*/
-/*  content: "";*/
-/*  display: block;*/
-/*  width: 4rem;*/
-/*  height: 0.25rem;*/
-/*  margin-top: 0.75rem;*/
-/*  border-radius: 999px;*/
-/*  background: var(--coral);*/
-/*}*/
 
 .cta-btn:disabled {
   opacity: 0.55;

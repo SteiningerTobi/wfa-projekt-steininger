@@ -16,6 +16,7 @@ interface SessionParticipant {
   };
 }
 
+// Komponente für die Teilnehmerliste eines bestimmten Kurstermins.
 @Component({
   selector: 'bs-participants',
   standalone: true,
@@ -41,6 +42,7 @@ export class Participants implements OnChanges {
   participants = signal<SessionParticipant[]>([]);
   isLoading = signal(false);
 
+  // Lädt Teilnehmer:innen neu, sobald das Modal geöffnet oder die IDs geändert werden.
   ngOnChanges(changes: SimpleChanges): void {
     if (
       this.isOpen &&
@@ -52,10 +54,12 @@ export class Participants implements OnChanges {
     }
   }
 
+  // Schließt das Modal über ein Output-Event.
   close(): void {
     this.closed.emit();
   }
 
+  // Lädt die Teilnehmer:innen eines konkreten Kurstermins vom Backend.
   loadParticipants(): void {
     if (!this.courseId || !this.sessionId) {
       return;
@@ -82,6 +86,7 @@ export class Participants implements OnChanges {
     });
   }
 
+  // Übersetzt technische Statuswerte in lesbare Labels.
   getStatusLabel(status: string | null): string {
     const labels: Record<string, string> = {
       booked: 'Gebucht',

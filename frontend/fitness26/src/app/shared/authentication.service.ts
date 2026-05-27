@@ -23,6 +23,7 @@ interface Token {
   sub?: number;
 }
 
+// Service für Login, Logout und JWT-basierte Authentifizierung.
 @Injectable({
   providedIn: 'root'
 })
@@ -31,6 +32,7 @@ export class AuthenticationService {
 
   constructor(private http: HttpClient) {}
 
+  // Sendet Login-Daten an das Backend.
   login(email: string, password: string) {
     return this.http.post<LoginResponse>(`${this.api}/login`, {
       email,
@@ -38,6 +40,7 @@ export class AuthenticationService {
     });
   }
 
+  // Speichert Token und wichtige Userdaten im SessionStorage.
   setSessionStorage(token: string): void {
     const decodedToken = jwtDecode(token) as Token;
 
@@ -52,6 +55,7 @@ export class AuthenticationService {
     }
   }
 
+  // Loggt den User serverseitig aus und leert lokal die Session.
   logout() {
     const request = this.http.post(`${this.api}/logout`, {});
 
@@ -60,6 +64,7 @@ export class AuthenticationService {
     return request;
   }
 
+  // Prüft, ob ein gültiger, nicht abgelaufener JWT-Token vorhanden ist.
   isLoggedIn(): boolean {
     const token = sessionStorage.getItem('token');
 
@@ -80,14 +85,17 @@ export class AuthenticationService {
     return true;
   }
 
+  // Gibt die gespeicherte Rolle des Users zurück.
   getRole(): string | null {
     return sessionStorage.getItem('role');
   }
 
+  // Prüft, ob der aktuelle User Trainer:in ist.
   isTrainer(): boolean {
     return this.getRole() === 'trainer';
   }
 
+  // Entfernt alle lokal gespeicherten Authentifizierungsdaten.
   private clearSession(): void {
     sessionStorage.removeItem('token');
     sessionStorage.removeItem('userId');
@@ -95,6 +103,7 @@ export class AuthenticationService {
     sessionStorage.removeItem('user');
   }
 
+  // Gibt den aktuell gespeicherten User mit ID und Rolle zurück.
   getCurrentUser(): { id: number; role: string | null } | null {
     const userId = sessionStorage.getItem('userId');
 
@@ -107,5 +116,4 @@ export class AuthenticationService {
       role: sessionStorage.getItem('role')
     };
   }
-
 }

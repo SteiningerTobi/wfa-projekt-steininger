@@ -7,7 +7,7 @@ import { MySessionsForm } from '../my-sessions-form/my-sessions-form';
 import { CourseSystem } from '../../shared/course-system';
 import { AuthenticationService } from '../../shared/authentication.service';
 import { Course } from '../../shared/classes/course';
-import {ConfirmModal} from '../../confirm-modal/confirm-modal';
+import { ConfirmModal } from '../../confirm-modal/confirm-modal';
 
 type Difficulty = 'beginner' | 'intermediate' | 'advanced';
 
@@ -26,6 +26,7 @@ interface CourseFormData {
   category_ids: number[];
 }
 
+// Komponente zum Erstellen und Bearbeiten eigener Kurse.
 @Component({
   selector: 'bs-my-course-form',
   standalone: true,
@@ -68,6 +69,7 @@ export class MyCourseForm implements OnInit {
     category_ids: []
   };
 
+  // Lädt Kategorien und entscheidet anhand der URL, ob erstellt oder bearbeitet wird.
   ngOnInit(): void {
     this.loadCategories();
 
@@ -90,6 +92,7 @@ export class MyCourseForm implements OnInit {
     this.loadCourse(id);
   }
 
+  // Lädt alle verfügbaren Kategorien für die Auswahl.
   loadCategories(): void {
     this.courseStore.getCategories().subscribe({
       next: (categories) => {
@@ -104,6 +107,7 @@ export class MyCourseForm implements OnInit {
     });
   }
 
+  // Lädt einen bestehenden Kurs und befüllt damit das Formular.
   loadCourse(id: number): void {
     this.isLoading.set(true);
 
@@ -133,6 +137,7 @@ export class MyCourseForm implements OnInit {
     });
   }
 
+  // Wählt eine Kategorie aus oder entfernt sie wieder.
   toggleCategory(categoryId: number): void {
     if (this.form.category_ids.includes(categoryId)) {
       this.form.category_ids = this.form.category_ids.filter(id => id !== categoryId);
@@ -142,10 +147,12 @@ export class MyCourseForm implements OnInit {
     this.form.category_ids = [...this.form.category_ids, categoryId];
   }
 
+  // Prüft, ob eine Kategorie aktuell ausgewählt ist.
   isCategorySelected(categoryId: number): boolean {
     return this.form.category_ids.includes(categoryId);
   }
 
+  // Speichert den Kurs je nach Modus als neuen oder aktualisierten Kurs.
   saveCourse(): void {
     if (this.isSaving()) {
       return;
@@ -207,7 +214,6 @@ export class MyCourseForm implements OnInit {
       return;
     }
 
-
     this.courseStore.create(payload).subscribe({
       next: () => {
         this.toastr.success(
@@ -229,6 +235,7 @@ export class MyCourseForm implements OnInit {
     });
   }
 
+  // Prüft, ob alle Pflichtfelder korrekt befüllt sind.
   isFormValid(): boolean {
     return Boolean(
       this.form.title.trim()
@@ -240,10 +247,12 @@ export class MyCourseForm implements OnInit {
     );
   }
 
+  // Setzt die ausgewählten Kategorien im Formular.
   setSelectedCategories(categoryIds: number[]): void {
     this.form.category_ids = categoryIds.map(id => Number(id));
   }
 
+  // Öffnet das Bestätigungsmodal vor dem Löschen eines Kurses.
   deleteCourse(): void {
     const id = this.courseId();
 
@@ -261,11 +270,13 @@ export class MyCourseForm implements OnInit {
     this.confirmModalOpen.set(true);
   }
 
+  // Schließt das Lösch-Modal ohne Aktion.
   cancelConfirmModal(): void {
     this.confirmModalOpen.set(false);
     this.pendingDeleteCourseId = null;
   }
 
+  // Löscht den ausgewählten Kurs nach Bestätigung.
   confirmDeleteCourse(): void {
     const id = this.pendingDeleteCourseId;
 

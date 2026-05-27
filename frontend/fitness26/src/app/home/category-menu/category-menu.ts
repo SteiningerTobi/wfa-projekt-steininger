@@ -7,6 +7,7 @@ type CategoryMenuItem = {
   image: string;
 };
 
+// Komponente für die Kategorieauswahl auf der Startseite.
 @Component({
   selector: 'bs-category-menu',
   standalone: true,
@@ -17,6 +18,7 @@ type CategoryMenuItem = {
   styleUrl: './category-menu.css'
 })
 export class CategoryMenu {
+  // Statische Kategorien für die Anzeige im Menü.
   categories: CategoryMenuItem[] = [
     {
       id: 1,

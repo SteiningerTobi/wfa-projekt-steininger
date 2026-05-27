@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { RouterLink, ActivatedRoute } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 
@@ -6,6 +6,7 @@ import { CourseSystem } from '../../shared/course-system';
 import { Course } from '../../shared/classes/course';
 import { CourseListCardSlot } from '../course-list-card-slot/course-list-card-slot';
 
+// Komponente für die Kursübersicht mit Such- und Kategorie-Filter.
 @Component({
   selector: 'bs-course-list',
   standalone: true,
@@ -28,6 +29,7 @@ export class CourseList {
     initialValue: this.route.snapshot.queryParamMap
   });
 
+  // Filtert Kurse anhand von Suchbegriff und ausgewählten Kategorien aus der URL.
   filteredCourses = computed(() => {
     const courses = this.courses();
 
@@ -61,6 +63,7 @@ export class CourseList {
     });
   });
 
+  // Erstellt einen durchsuchbaren Text aus den Trainerdaten eines Kurses.
   private getTrainerSearchText(course: Course): string {
     if (!course.trainer) {
       return '';

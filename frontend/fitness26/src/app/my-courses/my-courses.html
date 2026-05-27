@@ -2,22 +2,23 @@
   <div class="my-courses-header">
     <div class="w-full flex-apart">
       <h1>Meine Kurse</h1>
-      <div  class="flex-center">
+
+      <div class="flex-center">
         @if (isListRoute()) {
+          <!-- Button zum Erstellen eines neuen Kurses in der Listenansicht. -->
           <a routerLink="/my-courses/new" class="reg-btn text-center">
             Neuen Kurs erstellen +
           </a>
         } @else {
+          <!-- Zurück-Button aus Formular-/Detailansichten zur Kursübersicht. -->
           <a routerLink="/my-courses/all" class="reg-outline-btn text-center">
             Zurück zur Übersicht
           </a>
         }
       </div>
-
     </div>
   </div>
 
+  <!-- Hier werden die Unterseiten von "Meine Kurse" gerendert. -->
   <router-outlet></router-outlet>
-
 </section>
-

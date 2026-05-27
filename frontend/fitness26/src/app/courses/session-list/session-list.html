@@ -6,51 +6,53 @@
   </div>
 
   @if (!sessions.length) {
+    <!-- Hinweis, wenn für den Kurs keine Termine vorhanden sind. -->
     <p class="empty-text">
       Für diesen Kurs sind aktuell keine Termine eingetragen.
     </p>
   } @else {
     <div class="session-slider">
       @for (session of sessions; track session.id) {
-        @if (session.status !== "past"){
-        <article class="session-slide">
-          <div>
-            <span class="session-status">
-              {{ getStatusLabel(session.status) }}
-            </span>
+        @if (session.status !== "past") {
+          <!-- Einzelner zukünftiger Kurstermin. -->
+          <article class="session-slide">
+            <div>
+              <span class="session-status">
+                {{ getStatusLabel(session.status) }}
+              </span>
 
-            <h3>{{ session.start_date | date:'dd.MM.yyyy' }}</h3>
+              <h3>{{ session.start_date | date:'dd.MM.yyyy' }}</h3>
 
-            <p class="session-time">
-              {{ session.start_date | date:'HH:mm' }} Uhr
-            </p>
+              <p class="session-time">
+                {{ session.start_date | date:'HH:mm' }} Uhr
+              </p>
 
-            <p>Dauer: {{ session.duration }} Minuten</p>
+              <p>Dauer: {{ session.duration }} Minuten</p>
 
-            <p>
-              Plätze: {{ session.booked_count }} / {{ maxCapacity }}
-            </p>
+              <p>
+                Plätze: {{ session.booked_count }} / {{ maxCapacity }}
+              </p>
 
-            <p>
-              Frei: {{ getFreeSpots(session) }}
-            </p>
-          </div>
+              <p>
+                Frei: {{ getFreeSpots(session) }}
+              </p>
+            </div>
 
-          <button
-            type="button"
-            class="cta-btn"
-            [disabled]="isFullyBooked(session) || isAlreadyBooked(session)"
-            (click)="handleBookingClick(session)"
-          >
-            @if (isAlreadyBooked(session)) {
-              Bereits gebucht
-            } @else if (isFullyBooked(session)) {
-              Ausgebucht
-            } @else {
-              Termin buchen
-            }
-          </button>
-        </article>
+            <button
+              type="button"
+              class="cta-btn"
+              [disabled]="isFullyBooked(session) || isAlreadyBooked(session)"
+              (click)="handleBookingClick(session)"
+            >
+              @if (isAlreadyBooked(session)) {
+                Bereits gebucht
+              } @else if (isFullyBooked(session)) {
+                Ausgebucht
+              } @else {
+                Termin buchen
+              }
+            </button>
+          </article>
         }
       }
     </div>
@@ -58,6 +60,7 @@
 </section>
 
 @if (showLoginModal()) {
+  <!-- Login-Modal wird geöffnet, wenn ein nicht eingeloggter User buchen möchte. -->
   <div class="login-modal-backdrop" (click)="closeLoginModal()">
     <div class="login-modal-panel" (click)="$event.stopPropagation()">
       <bs-login-area></bs-login-area>

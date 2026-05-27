@@ -4,6 +4,7 @@ import { routes } from './app.routes';
 import { Search } from './search/search';
 import { AuthenticationService } from './shared/authentication.service';
 
+// Root-Komponente der Angular-App.
 @Component({
   selector: 'bs-root',
   standalone: true,
@@ -25,6 +26,7 @@ export class App {
     public authService: AuthenticationService
   ) {}
 
+  // Steuert, auf welchen Seiten die Suchkomponente angezeigt wird.
   showSearch(): boolean {
     const url = this.router.url;
 
@@ -35,10 +37,12 @@ export class App {
     );
   }
 
+  // Prüft, ob aktuell ein User eingeloggt ist.
   isLoggedIn(): boolean {
     return this.authService.isLoggedIn();
   }
 
+  // Prüft, ob der eingeloggte User Trainer:in ist.
   isTrainer(): boolean {
     return this.authService.isTrainer();
   }

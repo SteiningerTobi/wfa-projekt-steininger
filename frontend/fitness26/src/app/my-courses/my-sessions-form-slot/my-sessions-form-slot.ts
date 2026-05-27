@@ -16,6 +16,7 @@ export interface SessionFormData {
   duration: number;
 }
 
+// Komponente für einen einzelnen Termin-Slot im Kursformular.
 @Component({
   selector: 'bs-my-sessions-form-slot',
   standalone: true,
@@ -39,28 +40,33 @@ export class MySessionsFormSlot {
   @Output() cancel = new EventEmitter<void>();
   @Output() participants = new EventEmitter<CourseSession>();
 
+  // Sendet das Speichern-Event an die Parent-Komponente.
   onSubmit(): void {
     this.save.emit();
   }
 
+  // Startet den Bearbeitungsmodus für den aktuellen Termin.
   onEdit(): void {
     if (this.session) {
       this.edit.emit(this.session);
     }
   }
 
+  // Sendet die ID des zu löschenden Termins an die Parent-Komponente.
   onDelete(): void {
     if (this.session) {
       this.delete.emit(this.session.id);
     }
   }
 
+  // Öffnet die Teilnehmerliste für den aktuellen Termin.
   openParticipants(): void {
     if (this.session) {
       this.participants.emit(this.session);
     }
   }
 
+  // Übersetzt technische Statuswerte in lesbare Labels.
   getStatusLabel(status: string): string {
     const labels: Record<string, string> = {
       planned: 'Geplant',

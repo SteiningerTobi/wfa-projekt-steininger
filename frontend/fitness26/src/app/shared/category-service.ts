@@ -5,6 +5,7 @@ import { catchError, map, Observable, retry, throwError } from 'rxjs';
 import { Category } from './classes/category';
 import { CategoryFactory } from './factories/category.factory';
 
+// Service für das Laden von Kategorien aus dem Backend.
 @Injectable({
   providedIn: 'root',
 })
@@ -13,6 +14,7 @@ export class CategorySystem {
 
   private http = inject(HttpClient);
 
+  // Lädt alle Kategorien und wandelt die JSON-Daten in Category-Objekte um.
   getAll(): Observable<Category[]> {
     return this.http.get<any[]>(`${this.api}/categories`).pipe(
       map(json => CategoryFactory.fromJsonArray(json)),
@@ -21,6 +23,7 @@ export class CategorySystem {
     );
   }
 
+  // Lädt eine einzelne Kategorie anhand ihrer ID.
   getSingle(id: number): Observable<Category> {
     return this.http.get<any>(`${this.api}/categories/${id}`).pipe(
       map(json => CategoryFactory.fromJson(json)),
@@ -29,6 +32,7 @@ export class CategorySystem {
     );
   }
 
+  // Gibt Fehler an die aufrufende Komponente weiter.
   private errorHandler(error: Error | any): Observable<never> {
     return throwError(() => error);
   }

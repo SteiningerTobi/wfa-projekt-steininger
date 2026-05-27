@@ -7,10 +7,12 @@ import {
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
+// Interceptor, der den JWT-Token automatisch an HTTP-Requests anhängt.
 @Injectable({
   providedIn: 'root'
 })
 export class TokenInterceptorService implements HttpInterceptor {
+  // Fügt den Authorization-Header hinzu, falls ein Token vorhanden ist.
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const token = sessionStorage.getItem('token');
 

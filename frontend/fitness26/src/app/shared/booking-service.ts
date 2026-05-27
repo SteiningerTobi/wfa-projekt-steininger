@@ -37,6 +37,7 @@ export interface Booking {
   sessions: BookingSession[];
 }
 
+// Service für Buchungen und Terminbuchungen.
 @Injectable({
   providedIn: 'root'
 })
@@ -45,18 +46,22 @@ export class BookingService {
 
   constructor(private http: HttpClient) {}
 
+  // Lädt alle Buchungen des aktuell eingeloggten Users.
   getMyBookings(): Observable<Booking[]> {
     return this.http.get<Booking[]>(`${this.api}/my-bookings`);
   }
 
+  // Storniert eine komplette Buchung.
   cancelBooking(id: number): Observable<unknown> {
     return this.http.put(`${this.api}/bookings/${id}/cancel`, {});
   }
 
+  // Storniert einen einzelnen Termin innerhalb einer Buchung.
   cancelSession(bookingId: number, sessionId: number): Observable<unknown> {
     return this.http.put(`${this.api}/session-bookings/${bookingId}/${sessionId}/cancel`, {});
   }
 
+  // Erstellt eine Buchung für einen oder mehrere Termine.
   bookSessions(sessionIds: number[]): Observable<unknown> {
     return this.http.post(`${this.api}/bookings`, {
       session_ids: sessionIds

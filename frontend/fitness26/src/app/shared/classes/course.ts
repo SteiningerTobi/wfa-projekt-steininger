@@ -1,8 +1,9 @@
 import { Category } from './category';
 import { CourseSession } from './course-session';
-import { TrainerData} from './trainer-data';
-import { User } from './user'
+import { TrainerData } from './trainer-data';
+import { User } from './user';
 
+// Model-Klasse für einen Fitnesskurs.
 export class Course {
   constructor(
     public id: number,
@@ -18,9 +19,9 @@ export class Course {
     public trainer?: User | null,
     public created_at?: string | null,
     public updated_at?: string | null
-  ) {
-  }
+  ) {}
 
+  // Übersetzt den technischen Schwierigkeitswert in ein sichtbares Label.
   getDifficultyLabel(): string {
     switch (this.difficulty) {
       case 'beginner':

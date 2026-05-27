@@ -1,10 +1,11 @@
-import {Component, ElementRef, HostListener, ViewChild, inject, signal, OnInit} from '@angular/core';
+import { Component, ElementRef, HostListener, ViewChild, inject, signal, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { toSignal } from '@angular/core/rxjs-interop';
 
 import { CategorySystem } from '../shared/category-service';
 
+// Komponente für Suche und Kategorie-Filter.
 @Component({
   selector: 'bs-search',
   standalone: true,
@@ -12,11 +13,10 @@ import { CategorySystem } from '../shared/category-service';
   templateUrl: './search.html',
   styleUrl: './search.css'
 })
-export class Search implements OnInit{
+export class Search implements OnInit {
   private router = inject(Router);
   private categorySystem = inject(CategorySystem);
   private route = inject(ActivatedRoute);
-
 
   @ViewChild('categoryDropdown') categoryDropdown?: ElementRef<HTMLElement>;
 
@@ -29,14 +29,17 @@ export class Search implements OnInit{
   searchTerm = signal('');
   selectedCategoryIds = signal<number[]>([]);
 
+  // Aktualisiert den Suchbegriff.
   updateSearchTerm(value: string): void {
     this.searchTerm.set(value);
   }
 
+  // Öffnet oder schließt das Kategorie-Dropdown.
   toggleCategoryDropdown(): void {
     this.isCategoryDropdownOpen = !this.isCategoryDropdownOpen;
   }
 
+  // Wählt eine Kategorie aus oder entfernt sie wieder.
   toggleCategory(categoryId: number): void {
     const selected = this.selectedCategoryIds();
 
@@ -47,18 +50,22 @@ export class Search implements OnInit{
     }
   }
 
+  // Prüft, ob eine Kategorie aktuell ausgewählt ist.
   isCategorySelected(categoryId: number): boolean {
     return this.selectedCategoryIds().includes(categoryId);
   }
 
+  // Setzt alle ausgewählten Kategorien zurück.
   resetCategories(): void {
     this.selectedCategoryIds.set([]);
   }
 
+  // Schließt das Kategorie-Dropdown nach der Auswahl.
   applyCategories(): void {
     this.isCategoryDropdownOpen = false;
   }
 
+  // Navigiert zur Kursübersicht mit Such- und Kategorieparametern.
   searchCourses(): void {
     const queryParams: any = {};
 
@@ -80,6 +87,7 @@ export class Search implements OnInit{
     this.isCategoryDropdownOpen = false;
   }
 
+  // Schließt das Dropdown, wenn außerhalb davon geklickt wird.
   @HostListener('document:click', ['$event'])
   closeDropdownOnOutsideClick(event: MouseEvent): void {
     if (!this.isCategoryDropdownOpen) {
@@ -94,6 +102,7 @@ export class Search implements OnInit{
     }
   }
 
+  // Übernimmt Such- und Kategorieparameter aus der URL.
   ngOnInit(): void {
     this.route.queryParamMap.subscribe(params => {
       const categoriesParam = params.get('categories');

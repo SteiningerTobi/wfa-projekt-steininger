@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
+// Wiederverwendbares Bestätigungsmodal.
 @Component({
   selector: 'bs-confirm-modal',
   standalone: true,
@@ -15,10 +16,12 @@ export class ConfirmModal {
   @Output() confirmed = new EventEmitter<void>();
   @Output() cancelled = new EventEmitter<void>();
 
+  // Sendet ein Event, wenn die Aktion bestätigt wird.
   confirm(): void {
     this.confirmed.emit();
   }
 
+  // Sendet ein Event, wenn die Aktion abgebrochen wird.
   cancel(): void {
     this.cancelled.emit();
   }

@@ -14,6 +14,7 @@
   </div>
 
   @if (isLoading()) {
+    <!-- Ladezustand während die Kurstermine vom Backend geladen werden. -->
     <div class="rounded-2xl border border-dashed border-gray-300 bg-white p-5 text-gray-500">
       Termine werden geladen...
     </div>
@@ -30,6 +31,7 @@
 
     <div class="flex items-stretch gap-4 overflow-x-auto scroll-smooth pb-3 snap-x snap-mandatory">
       @for (session of sessions(); track session.id) {
+        <!-- Slot für einen bestehenden Termin. -->
         <bs-my-sessions-form-slot
           [session]="session"
           [form]="editForm"
@@ -43,6 +45,7 @@
         />
       }
 
+      <!-- Slot zum Erstellen eines neuen Termins. -->
       <bs-my-sessions-form-slot
         [session]="null"
         [form]="createForm"
@@ -54,6 +57,7 @@
     </div>
   }
 
+  <!-- Bestätigungsmodal vor dem Löschen eines Termins. -->
   <bs-confirm-modal
     [isOpen]="confirmModalOpen()"
     [title]="confirmModalTitle()"
@@ -64,6 +68,7 @@
     (cancelled)="cancelConfirmModal()"
   />
 
+  <!-- Modal zur Anzeige der Teilnehmer:innen eines Termins. -->
   <bs-participants
     [isOpen]="participantsModalOpen()"
     [courseId]="courseId"

@@ -1,7 +1,9 @@
 <section class="account-page big-marg-top">
   @if (isLoggedIn()) {
+    <!-- Zeigt den Accountbereich, wenn ein User eingeloggt ist. -->
     <bs-me></bs-me>
   } @else {
+    <!-- Wird angezeigt, wenn kein User eingeloggt ist. -->
     <div class="rounded-3xl border border-gray-200 bg-white p-8 shadow-sm md:p-12">
       <div class="text-center">
         <p class="text-xs font-black uppercase tracking-[0.18em] text-[var(--teal)]">
@@ -29,6 +31,8 @@
         <div class="mx-auto mt-0 flex max-w-2xl flex-col items-center gap-8 text-center">
           <span class="mt-10 login-btn-container">
             <h2 class="small-h2">Du hast noch keinen Account?</h2>
+
+            <!-- Platzhalter, Registrierung ist noch nicht implementiert. -->
             <a class="cta-btn" (click)="toBeImplemented()">Neu Registrieren</a>
           </span>
         </div>

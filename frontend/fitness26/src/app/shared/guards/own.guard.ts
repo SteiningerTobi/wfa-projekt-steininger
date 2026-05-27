@@ -5,6 +5,7 @@ import { map, catchError, of } from 'rxjs';
 import { AuthenticationService } from '../authentication.service';
 import { CourseSystem } from '../course-system';
 
+// Guard, der Bearbeiten-Routen nur für Besitzer:innen des Kurses freigibt.
 export const ownGuard: CanActivateFn = (route) => {
   const authService = inject(AuthenticationService);
   const courseSystem = inject(CourseSystem);
@@ -28,6 +29,7 @@ export const ownGuard: CanActivateFn = (route) => {
     return router.createUrlTree(['/my-courses']);
   }
 
+  // Lädt den Kurs und prüft, ob der aktuelle User der zugehörige Trainer ist.
   return courseSystem.getSingle(courseId).pipe(
     map((course) => {
       if (Number(course.trainer_id) === Number(currentUser.id)) {

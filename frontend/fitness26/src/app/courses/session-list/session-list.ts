@@ -1,4 +1,5 @@
-import { Component, inject, Input, OnChanges, OnInit, signal, SimpleChanges } from '@angular/core';import { DatePipe } from '@angular/common';
+import { Component, inject, Input, OnChanges, OnInit, signal, SimpleChanges } from '@angular/core';
+import { DatePipe } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 
 import { CourseSession } from '../../shared/classes/course-session';
@@ -6,6 +7,7 @@ import { LoginArea } from '../../account/login-area/login-area';
 import { AuthenticationService } from '../../shared/authentication.service';
 import { BookingService } from '../../shared/booking-service';
 
+// Komponente für die Anzeige und Buchung von Kursterminen.
 @Component({
   selector: 'bs-session-list',
   standalone: true,
@@ -30,16 +32,19 @@ export class SessionList implements OnInit, OnChanges {
   showLoginModal = signal(false);
   bookedSessionIds = signal<number[]>([]);
 
+  // Lädt beim Initialisieren bereits gebuchte Termine.
   ngOnInit(): void {
     this.loadBookedSessions();
   }
 
+  // Aktualisiert gebuchte Termine, wenn der Parent ein Refresh auslöst.
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['refreshToken'] && !changes['refreshToken'].firstChange) {
       this.loadBookedSessions();
     }
   }
 
+  // Lädt alle aktiven Terminbuchungen des eingeloggten Users.
   loadBookedSessions(): void {
     if (!this.authService.isLoggedIn()) {
       this.bookedSessionIds.set([]);
@@ -62,6 +67,7 @@ export class SessionList implements OnInit, OnChanges {
     });
   }
 
+  // Übersetzt technische Termin-Statuswerte für die Anzeige.
   getStatusLabel(status: string): string {
     switch (status) {
       case 'planned':
@@ -75,18 +81,22 @@ export class SessionList implements OnInit, OnChanges {
     }
   }
 
+  // Prüft, ob der Termin vom aktuellen User bereits gebucht wurde.
   isAlreadyBooked(session: CourseSession): boolean {
     return this.bookedSessionIds().includes(Number(session.id));
   }
 
+  // Prüft, ob die maximale Teilnehmerzahl erreicht ist.
   isFullyBooked(session: CourseSession): boolean {
     return this.maxCapacity > 0 && session.booked_count >= this.maxCapacity;
   }
 
+  // Berechnet die noch freien Plätze eines Termins.
   getFreeSpots(session: CourseSession): number {
     return Math.max(this.maxCapacity - session.booked_count, 0);
   }
 
+  // Prüft alle Bedingungen und startet danach die Buchung.
   handleBookingClick(session: CourseSession): void {
     if (this.isAlreadyBooked(session)) {
       this.toastr.info(
@@ -137,6 +147,7 @@ export class SessionList implements OnInit, OnChanges {
     this.initBooking(session);
   }
 
+  // Sendet die Buchung an das Backend und aktualisiert danach die Anzeige.
   initBooking(session: CourseSession): void {
     this.bookingService.bookSessions([session.id]).subscribe({
       next: () => {
@@ -191,10 +202,12 @@ export class SessionList implements OnInit, OnChanges {
     });
   }
 
+  // Öffnet das Login-Modal.
   openLoginModal(): void {
     this.showLoginModal.set(true);
   }
 
+  // Schließt das Login-Modal.
   closeLoginModal(): void {
     this.showLoginModal.set(false);
   }

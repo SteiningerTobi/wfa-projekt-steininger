@@ -5,6 +5,7 @@
 
   <div class="category-grid">
     @for (category of categories; track category.id) {
+      <!-- Kategorie-Karte verlinkt zur Kursübersicht mit gesetztem Kategorie-Filter. -->
       <a
         class="category-card"
         [routerLink]="['/courses']"

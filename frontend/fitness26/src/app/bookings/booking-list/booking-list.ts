@@ -7,6 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Booking, BookingService } from '../../shared/booking-service';
 import { ConfirmModal } from '../../confirm-modal/confirm-modal';
 
+// Komponente für die Anzeige und Stornierung eigener Buchungen.
 @Component({
   selector: 'bs-booking-list',
   standalone: true,
@@ -39,10 +40,12 @@ export class BookingList implements OnInit {
     private toastr: ToastrService
   ) {}
 
+  // Lädt die Buchungen beim Initialisieren der Komponente.
   ngOnInit(): void {
     this.loadBookings();
   }
 
+  // Lädt alle Buchungen des aktuell eingeloggten Users.
   loadBookings(): void {
     this.isLoading.set(true);
     this.errorMessage.set('');
@@ -70,6 +73,7 @@ export class BookingList implements OnInit {
       });
   }
 
+  // Öffnet das Bestätigungsmodal für das Stornieren einer kompletten Buchung.
   openCancelBookingModal(bookingId: number): void {
     if (this.isLoading()) {
       return;
@@ -86,6 +90,7 @@ export class BookingList implements OnInit {
     this.confirmModalOpen.set(true);
   }
 
+  // Öffnet das Bestätigungsmodal für das Stornieren eines einzelnen Termins.
   openCancelSessionModal(bookingId: number, sessionId: number): void {
     if (this.isLoading()) {
       return;
@@ -106,12 +111,14 @@ export class BookingList implements OnInit {
     this.confirmModalOpen.set(true);
   }
 
+  // Schließt das Modal und setzt offene Stornierungen zurück.
   cancelConfirmModal(): void {
     this.confirmModalOpen.set(false);
     this.pendingCancelBookingId = null;
     this.pendingCancelSession = null;
   }
 
+  // Führt je nach ausgewählter Aktion die passende Stornierung aus.
   confirmCancelAction(): void {
     if (this.pendingCancelBookingId) {
       this.confirmCancelBooking();
@@ -123,6 +130,7 @@ export class BookingList implements OnInit {
     }
   }
 
+  // Storniert eine komplette Buchung über das Backend.
   private confirmCancelBooking(): void {
     const bookingId = this.pendingCancelBookingId;
 
@@ -153,6 +161,7 @@ export class BookingList implements OnInit {
     });
   }
 
+  // Übersetzt den technischen Buchungsstatus für die Anzeige.
   getStatusText(status: string): string {
     switch (status) {
       case 'active':
@@ -166,6 +175,7 @@ export class BookingList implements OnInit {
     }
   }
 
+  // Übersetzt den technischen Schwierigkeitsgrad für die Anzeige.
   getDifficultyText(difficulty: string | undefined | null): string {
     switch (difficulty) {
       case 'beginner':
@@ -179,6 +189,7 @@ export class BookingList implements OnInit {
     }
   }
 
+  // Storniert einen einzelnen Termin innerhalb einer Buchung.
   private confirmCancelSession(): void {
     const pending = this.pendingCancelSession;
 
@@ -196,6 +207,7 @@ export class BookingList implements OnInit {
           'Storniert'
         );
 
+        // Aktualisiert den lokalen Status, ohne die gesamte Liste neu zu laden.
         this.bookings.update(bookings =>
           bookings.map(booking => ({
             ...booking,

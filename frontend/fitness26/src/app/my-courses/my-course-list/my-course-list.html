@@ -1,8 +1,10 @@
 @if (isLoading()) {
+  <!-- Ladezustand während die eigenen Kurse geladen werden. -->
   <div class="my-course-state">
     Kurse werden geladen...
   </div>
 } @else if (!courses().length) {
+  <!-- Hinweis, wenn der Trainer noch keine Kurse erstellt hat. -->
   <section class="my-course-state">
     <h2>Noch keine Kurse erstellt</h2>
 
@@ -11,6 +13,7 @@
     </p>
   </section>
 } @else {
+  <!-- Liste aller Kurse des aktuell eingeloggten Trainers. -->
   <section class="flex flex-col gap-4">
     @for (course of courses(); track course.id) {
       <article class="my-course-row grid gap-5 md:grid-cols-[9rem_1fr_auto] md:items-center">
@@ -21,6 +24,7 @@
               [alt]="course.title"
             />
           } @else {
+            <!-- Fallback, wenn kein Kursbild vorhanden ist. -->
             <span>
               {{ course.title.charAt(0) }}
             </span>

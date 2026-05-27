@@ -1,9 +1,11 @@
 <section class="course-form-page">
   @if (isLoading()) {
+    <!-- Ladezustand während ein bestehender Kurs geladen wird. -->
     <div class="course-form-state">
       Kurs wird geladen...
     </div>
   } @else {
+    <!-- Formular zum Erstellen oder Bearbeiten eines Kurses. -->
     <form class="course-form-card" (ngSubmit)="saveCourse()">
       <div class="course-form-header">
         <div>
@@ -90,6 +92,7 @@
               Kategorien werden geladen...
             </p>
           } @else {
+            <!-- Auswahl mehrerer Kategorien für den Kurs. -->
             <div class="category-checkbox-grid">
               @for (category of categories(); track category.id) {
                 <label class="category-checkbox">
@@ -154,7 +157,9 @@
         </button>
       </div>
     </form>
+
     @if (isEditMode() && courseId()) {
+      <!-- Terminverwaltung wird nur bei bestehenden Kursen angezeigt. -->
       <bs-my-sessions-form
         [courseId]="courseId()!"
       />
@@ -162,6 +167,7 @@
   }
 </section>
 
+<!-- Bestätigungsmodal vor dem Löschen eines Kurses. -->
 <bs-confirm-modal
   [isOpen]="confirmModalOpen()"
   [title]="confirmModalTitle()"

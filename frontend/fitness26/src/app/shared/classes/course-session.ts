@@ -10,14 +10,17 @@ export class CourseSession {
     public updated_at?: string | null
   ) {}
 
+  // Prüft, ob der Termin noch geplant ist.
   isPlanned(): boolean {
     return this.status === 'planned';
   }
 
+  // Prüft, ob der Termin storniert wurde.
   isCancelled(): boolean {
     return this.status === 'cancelled';
   }
 
+  // Prüft, ob der Termin abgeschlossen ist.
   isCompleted(): boolean {
     return this.status === 'completed';
   }

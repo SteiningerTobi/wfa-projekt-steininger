@@ -10,6 +10,7 @@ import {
 import { ConfirmModal } from '../../confirm-modal/confirm-modal';
 import { Participants } from '../../participants/participants';
 
+// Komponente zum Verwalten der Termine eines Kurses.
 @Component({
   selector: 'bs-my-sessions-form',
   standalone: true,
@@ -52,12 +53,14 @@ export class MySessionsForm implements OnChanges {
     duration: 60
   };
 
+  // Lädt Termine neu, sobald sich die Kurs-ID ändert.
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['courseId'] && this.courseId) {
       this.loadSessions();
     }
   }
 
+  // Lädt alle Termine des aktuellen Kurses.
   loadSessions(): void {
     this.isLoading.set(true);
 
@@ -77,6 +80,7 @@ export class MySessionsForm implements OnChanges {
     });
   }
 
+  // Erstellt einen neuen Kurstermin.
   createSession(): void {
     if (this.isSaving()) {
       return;
@@ -119,6 +123,7 @@ export class MySessionsForm implements OnChanges {
     });
   }
 
+  // Aktualisiert den aktuell bearbeiteten Kurstermin.
   updateSession(): void {
     const editingId = this.editingSessionId();
 
@@ -163,6 +168,7 @@ export class MySessionsForm implements OnChanges {
     });
   }
 
+  // Füllt das Bearbeitungsformular mit den Daten des ausgewählten Termins.
   editSession(session: CourseSession): void {
     this.editingSessionId.set(session.id);
 
@@ -172,6 +178,7 @@ export class MySessionsForm implements OnChanges {
     };
   }
 
+  // Öffnet das Bestätigungsmodal vor dem Löschen eines Termins.
   deleteSession(sessionId: number): void {
     if (this.isSaving()) {
       return;
@@ -187,6 +194,7 @@ export class MySessionsForm implements OnChanges {
     this.confirmModalOpen.set(true);
   }
 
+  // Löscht den ausgewählten Termin nach Bestätigung.
   confirmDeleteSession(): void {
     const sessionId = this.pendingDeleteSessionId;
 
@@ -224,25 +232,30 @@ export class MySessionsForm implements OnChanges {
     });
   }
 
+  // Schließt das Lösch-Modal ohne Aktion.
   cancelConfirmModal(): void {
     this.confirmModalOpen.set(false);
     this.pendingDeleteSessionId = null;
   }
 
+  // Öffnet das Teilnehmer:innen-Modal für einen Termin.
   openParticipantsModal(session: CourseSession): void {
     this.selectedParticipantsSessionId.set(session.id);
     this.participantsModalOpen.set(true);
   }
 
+  // Schließt das Teilnehmer:innen-Modal.
   closeParticipantsModal(): void {
     this.participantsModalOpen.set(false);
     this.selectedParticipantsSessionId.set(null);
   }
 
+  // Bricht das Bearbeiten eines Termins ab.
   cancelEdit(): void {
     this.resetEditForm();
   }
 
+  // Setzt das Bearbeitungsformular zurück.
   resetEditForm(): void {
     this.editingSessionId.set(null);
 
@@ -252,6 +265,7 @@ export class MySessionsForm implements OnChanges {
     };
   }
 
+  // Setzt das Formular zum Erstellen eines Termins zurück.
   resetCreateForm(): void {
     this.createForm = {
       start_date: '',
@@ -259,6 +273,7 @@ export class MySessionsForm implements OnChanges {
     };
   }
 
+  // Prüft, ob Datum und Dauer im Formular gültig sind.
   isFormValid(form: SessionFormData): boolean {
     return Boolean(
       form.start_date &&
@@ -266,10 +281,12 @@ export class MySessionsForm implements OnChanges {
     );
   }
 
+  // Wandelt den datetime-local-Wert in das Backend-Datumsformat um.
   private toBackendDate(value: string): string {
     return value.replace('T', ' ') + ':00';
   }
 
+  // Wandelt ein Backend-Datum in das Format für datetime-local um.
   private toDatetimeLocalValue(value: string): string {
     const date = new Date(value);
     const offset = date.getTimezoneOffset();

@@ -1,4 +1,5 @@
 @if (!filteredCourses()) {
+  <!-- Ladezustand während die Kurse geladen werden. -->
   <div class="flex flex-col items-center justify-center gap-4 py-12 text-gray-600">
     <div class="h-10 w-10 animate-spin rounded-full border-4 border-gray-300 border-t-[var(--coral)]"></div>
     <p class="text-sm font-medium">Kurse werden geladen...</p>
@@ -6,6 +7,7 @@
 }
 
 @if (filteredCourses() && !filteredCourses().length) {
+  <!-- Hinweis, wenn keine Kurse gefunden oder eingetragen wurden. -->
   <div class="rounded-xl border border-gray-200 bg-white p-6 text-center shadow-sm">
     <p class="text-sm text-gray-600">
       Es wurden keine Kurse eingetragen!
@@ -13,8 +15,10 @@
   </div>
 } @else {
   <h1>Kurse</h1>
+
   <div class="course-list big-marg-bottom">
     @for (course of filteredCourses(); track course.id) {
+      <!-- Kurskarte mit Bild, Beschreibung, Metadaten und Kategorien. -->
       <bs-course-list-card-slot [routerLink]="['/courses', course.id]">
         @if (course.image_path) {
           <img
@@ -36,15 +40,14 @@
         <span meta>
           {{ course.address }} <br>
           {{ course.getDifficultyLabel() }}
-           - max. {{ course.max_capacity }} Teilnehmer:innen
+          - max. {{ course.max_capacity }} Teilnehmer:innen
         </span>
 
         <span categories>
-        @for (category of course.categories; track category.id; let l = $last) {
-          {{ category.name }}@if (!l) {, }
-        }
+          @for (category of course.categories; track category.id; let l = $last) {
+            {{ category.name }}@if (!l) {, }
+          }
         </span>
-
       </bs-course-list-card-slot>
     }
   </div>

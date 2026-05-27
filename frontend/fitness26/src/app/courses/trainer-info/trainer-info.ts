@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { User } from '../../shared/classes/user';
 
+//Komponente für die Anzeige von Trainerinformationen
 @Component({
   selector: 'bs-trainer-info',
   standalone: true,

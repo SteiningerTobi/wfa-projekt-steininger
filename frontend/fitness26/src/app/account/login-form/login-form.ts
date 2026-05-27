@@ -1,9 +1,10 @@
-import {Component, inject} from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthenticationService, LoginResponse } from '../../shared/authentication.service';
-import { ToastrService } from 'ngx-toastr'
+import { ToastrService } from 'ngx-toastr';
 
+// Komponente für das Login-Formular.
 @Component({
   selector: 'bs-login-form',
   standalone: true,
@@ -24,6 +25,7 @@ export class LoginForm {
     private authService: AuthenticationService,
     private router: Router
   ) {
+    // Erstellt das Reactive Form mit Validierungsregeln.
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
@@ -31,6 +33,7 @@ export class LoginForm {
     });
   }
 
+  // Führt den Login aus und speichert Token/Userdaten bei Erfolg.
   login(): void {
     if (this.loginForm.invalid) {
       this.loginForm.markAllAsTouched();
@@ -59,14 +62,17 @@ export class LoginForm {
     });
   }
 
+  // Prüft, ob aktuell ein User eingeloggt ist.
   isLoggedIn(): boolean {
     return this.authService.isLoggedIn();
   }
 
+  // Loggt den aktuellen User aus.
   logout(): void {
     this.authService.logout();
   }
 
+  // Zeigt einen Hinweis für noch nicht implementierte Features.
   toBeImplemented(): void {
     this.toastr.warning(
       'Aktuell ist dieses Feature noch nicht implementiert.',

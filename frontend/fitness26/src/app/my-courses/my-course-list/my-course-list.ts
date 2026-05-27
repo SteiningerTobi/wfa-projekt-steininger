@@ -6,6 +6,7 @@ import { CourseSystem } from '../../shared/course-system';
 import { AuthenticationService } from '../../shared/authentication.service';
 import { Course } from '../../shared/classes/course';
 
+// Komponente für die Liste der eigenen Trainer-Kurse.
 @Component({
   selector: 'bs-my-course-list',
   standalone: true,
@@ -23,10 +24,12 @@ export class MyCourseList implements OnInit {
   courses = signal<Course[]>([]);
   isLoading = signal(true);
 
+  // Lädt beim Start der Komponente die eigenen Kurse.
   ngOnInit(): void {
     this.loadMyCourses();
   }
 
+  // Lädt alle Kurse und filtert sie auf den aktuell eingeloggten Trainer.
   loadMyCourses(): void {
     const currentUser = this.authService.getCurrentUser();
 

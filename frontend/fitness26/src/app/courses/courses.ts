@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import {CourseList} from './course-list/course-list';
 
+//Page-Component für die Seite der Kurse
 @Component({
   selector: 'bs-courses',
   imports: [

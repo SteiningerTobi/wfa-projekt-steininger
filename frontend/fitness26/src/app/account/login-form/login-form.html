@@ -3,12 +3,14 @@
     <h1 class="mt-3 text-4xl font-black leading-none tracking-tight text-[var(--prussian)] md:text-6xl">
       Anmelden
     </h1>
+
     <p>
       Melde dich mit deinem Account an, um Kurstermine zu buchen und deine Buchungen zu verwalten.
     </p>
   </div>
 
   @if(!isLoggedIn()) {
+    <!-- Login-Formular wird nur angezeigt, wenn kein User eingeloggt ist. -->
     <form class="login-form" [formGroup]="loginForm" (ngSubmit)="login()">
       <div class="form-group">
         <label for="login-email">E-Mail</label>
@@ -21,6 +23,7 @@
           formControlName="email"
         />
 
+        <!-- Fehlermeldung bei fehlender E-Mail. -->
         @if(
           loginForm.get('email')?.invalid &&
           (loginForm.get('email')?.dirty || loginForm.get('email')?.touched) &&
@@ -29,6 +32,7 @@
           <div class="form-error">E-Mail ist verpflichtend.</div>
         }
 
+        <!-- Fehlermeldung bei ungültigem E-Mail-Format. -->
         @if(
           loginForm.get('email')?.invalid &&
           (loginForm.get('email')?.dirty || loginForm.get('email')?.touched) &&
@@ -49,6 +53,7 @@
           formControlName="password"
         />
 
+        <!-- Fehlermeldung bei fehlendem Passwort. -->
         @if(
           loginForm.get('password')?.invalid &&
           (loginForm.get('password')?.dirty || loginForm.get('password')?.touched)
@@ -61,6 +66,7 @@
       </div>
 
       @if(loginError) {
+        <!-- Fehlermeldung, wenn Backend-Login nicht erfolgreich war. -->
         <div class="form-error">
           Login fehlgeschlagen. Bitte E-Mail und Passwort prüfen.
         </div>
@@ -81,6 +87,7 @@
   }
 
   @if(isLoggedIn()) {
+    <!-- Hinweisbereich, falls der User bereits angemeldet ist. -->
     <div class="login-form">
       <p>Du bist bereits eingeloggt.</p>
 
